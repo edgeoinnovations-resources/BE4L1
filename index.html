@@ -398,6 +398,103 @@
             animation: shake 0.4s;
         }
 
+        /* ===== CHAIN BUILDER (Up/Down Arrows) ===== */
+        .chain-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: #ffffff;
+            border: 2px solid #d4c9b3;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .chain-item:hover {
+            border-color: #c8a951;
+        }
+
+        .chain-number {
+            background: #8a9ea7;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .chain-text {
+            flex: 1;
+        }
+
+        .chain-arrows {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+
+        .chain-arrow-btn {
+            background: #e8e2d4;
+            border: 1px solid #d4c9b3;
+            border-radius: 4px;
+            width: 32px;
+            height: 26px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.15s ease;
+            color: #4a3728;
+        }
+
+        .chain-arrow-btn:hover {
+            background: #c8a951;
+            color: #fff;
+            border-color: #b8993f;
+        }
+
+        .chain-arrow-btn:active {
+            transform: scale(0.92);
+        }
+
+        .chain-arrow-btn.disabled {
+            opacity: 0.3;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .chain-item.chain-correct {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .chain-item.chain-correct .chain-number {
+            background: #4caf50;
+        }
+
+        .chain-item.chain-wrong {
+            background: #ffebee;
+            border-color: #f44336;
+        }
+
+        .chain-item.chain-wrong .chain-number {
+            background: #f44336;
+        }
+
+        .chain-item.chain-moving {
+            transform: scale(0.97);
+            opacity: 0.7;
+        }
+
         /* ===== CITY CARD MATCHING ===== */
         .city-card {
             background: #fff;
@@ -1213,10 +1310,12 @@
                 <!-- Activity 2.1: Cause-and-Effect Chain -->
                 <div class="activity" id="activity-2-1">
                     <div class="activity-title">Activity 2.1: Cause-and-Effect Chain Builder <span class="activity-check" id="check-2-1"></span></div>
-                    <p style="margin-bottom: 15px; font-size: 14px;">Arrange these events in the correct cause-and-effect order. Drag them from left to right to show how each one led to the next.</p>
-                    <div id="chain-events"></div>
-                    <button class="check-button" onclick="checkChain()">Check My Chain</button>
-                    <button class="reset-button" onclick="resetChain()">Reset</button>
+                    <p style="margin-bottom: 15px; font-size: 14px;">These events are out of order! Use the <strong>up</strong> and <strong>down</strong> arrows to move each event until the cause-and-effect chain reads correctly from top (#1) to bottom (#7). Then click <strong>Check My Chain</strong> to see if you got it right.</p>
+                    <div id="chain-events" style="display: flex; flex-direction: column; gap: 0;"></div>
+                    <div style="margin-top: 15px;">
+                        <button class="check-button" onclick="checkChain()">Check My Chain</button>
+                        <button class="reset-button" onclick="resetChain()">Reset</button>
+                    </div>
                     <div class="feedback" id="chain-feedback"></div>
                 </div>
 
@@ -1942,35 +2041,88 @@
         }
 
         // ===== CHAIN =====
-        function initializeChain() {
-            const eventsDiv = document.getElementById('chain-events');
-            let shuffledChain = [...chainData].sort(() => Math.random() - 0.5);
+        // ===== CHAIN (Up/Down Arrow Reordering) =====
+        var chainOrder = []; // current order as array of indices into chainData
 
-            eventsDiv.innerHTML = '<div style="margin-bottom: 15px; font-weight: 600; color: #1a3a5c;">Arrange these events in order:</div>' +
-                shuffledChain.map((item, idx) =>
-                    `<div class="timeline-event" draggable="true" data-chain-order="${chainData.indexOf(item)}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item}</div>`
-                ).join('');
+        function initializeChain() {
+            // Create a shuffled array of indices
+            chainOrder = chainData.map(function(_, i) { return i; });
+            // Fisher-Yates shuffle
+            for (var i = chainOrder.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = chainOrder[i];
+                chainOrder[i] = chainOrder[j];
+                chainOrder[j] = temp;
+            }
+            renderChain();
+        }
+
+        function renderChain() {
+            var eventsDiv = document.getElementById('chain-events');
+            eventsDiv.innerHTML = chainOrder.map(function(dataIdx, position) {
+                var upDisabled = position === 0 ? ' disabled' : '';
+                var downDisabled = position === chainOrder.length - 1 ? ' disabled' : '';
+                return '<div class="chain-item" id="chain-pos-' + position + '" data-chain-order="' + dataIdx + '">' +
+                    '<div class="chain-number">' + (position + 1) + '</div>' +
+                    '<div class="chain-text">' + chainData[dataIdx] + '</div>' +
+                    '<div class="chain-arrows">' +
+                        '<button class="chain-arrow-btn' + upDisabled + '" onclick="moveChainItem(' + position + ', -1)" title="Move up">&#9650;</button>' +
+                        '<button class="chain-arrow-btn' + downDisabled + '" onclick="moveChainItem(' + position + ', 1)" title="Move down">&#9660;</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            // Clear any previous check styling
+            document.querySelectorAll('.chain-item').forEach(function(el) {
+                el.classList.remove('chain-correct', 'chain-wrong');
+            });
+        }
+
+        function moveChainItem(position, direction) {
+            var newPos = position + direction;
+            if (newPos < 0 || newPos >= chainOrder.length) return;
+
+            // Swap in the array
+            var temp = chainOrder[position];
+            chainOrder[position] = chainOrder[newPos];
+            chainOrder[newPos] = temp;
+
+            // Brief animation on the moving item
+            renderChain();
+            var movedEl = document.getElementById('chain-pos-' + newPos);
+            if (movedEl) {
+                movedEl.classList.add('chain-moving');
+                setTimeout(function() { movedEl.classList.remove('chain-moving'); }, 200);
+            }
         }
 
         function checkChain() {
-            const events = document.querySelectorAll('[data-chain-order]');
-            let correct = 0;
-            events.forEach((el, idx) => {
-                const expectedOrder = idx;
-                const actualOrder = parseInt(el.dataset.chainOrder);
-                if (actualOrder === expectedOrder) {
+            var items = document.querySelectorAll('.chain-item');
+            var correct = 0;
+
+            items.forEach(function(el, idx) {
+                var dataOrder = parseInt(el.dataset.chainOrder);
+                el.classList.remove('chain-correct', 'chain-wrong');
+                if (dataOrder === idx) {
+                    el.classList.add('chain-correct');
                     correct++;
+                } else {
+                    el.classList.add('chain-wrong');
                 }
             });
 
-            const feedback = document.getElementById('chain-feedback');
-            if (correct === 7) {
-                feedback.innerHTML = `<span style="color: #2e7d32; font-weight: 700;">✓ Perfect! The causal chain is in the correct order!</span>`;
+            var feedback = document.getElementById('chain-feedback');
+            if (correct === chainData.length) {
+                feedback.innerHTML = '<span style="color: #2e7d32; font-weight: 700;">&#10003; Perfect! The causal chain is in the correct order!</span>';
                 feedback.classList.add('show', 'success');
                 appState.completedActivities.add('activity-2-1');
-                document.getElementById('check-2-1').textContent = '✓';
+                document.getElementById('check-2-1').textContent = '\u2713';
+                // Disable arrows since it's complete
+                document.querySelectorAll('.chain-arrow-btn').forEach(function(btn) {
+                    btn.classList.add('disabled');
+                });
             } else {
-                feedback.innerHTML = `<span style="color: #c62828;">You got ${correct} out of 7 in the correct order. Keep trying!</span>`;
+                feedback.innerHTML = '<span style="color: #c62828;">You got ' + correct + ' out of ' + chainData.length + ' in the correct position. Green = correct, red = needs to move. Keep trying!</span>';
                 feedback.classList.add('show', 'error');
             }
             updateProgress();
@@ -1978,7 +2130,11 @@
 
         function resetChain() {
             document.getElementById('chain-feedback').classList.remove('show');
+            document.getElementById('chain-feedback').innerHTML = '';
+            appState.completedActivities.delete('activity-2-1');
+            document.getElementById('check-2-1').textContent = '';
             initializeChain();
+            updateProgress();
         }
 
         // ===== TEXT RESPONSES =====

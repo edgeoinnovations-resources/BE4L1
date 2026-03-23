@@ -912,6 +912,32 @@
         </div>
     </div>
 
+    <!-- VIDEO SECTION -->
+    <div class="container">
+        <div class="instructions" style="border-left-color: #1a3a5c;">
+            <h2 style="margin-bottom: 5px;">Step 1: Watch These Videos First</h2>
+            <p style="margin-bottom: 20px;">Before starting the activities below, watch both of these short videos. They'll give you the background knowledge you need to succeed at every level.</p>
+
+            <div style="margin-bottom: 25px;">
+                <h3 style="font-family: 'Merriweather', serif; font-size: 17px; color: #1a3a5c; margin-bottom: 8px;">Video 1: Big Era 4 Introduction — The World Gets Bigger</h3>
+                <p style="font-size: 14px; color: #666; margin-bottom: 10px;">This video introduces the key developments of Big Era IV: how iron, population growth, trade networks, empires, and big ideas all connected to reshape the ancient world.</p>
+                <video controls preload="metadata" style="width: 100%; max-width: 800px; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.15);">
+                    <source src="big-era-4-intro.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div>
+                <h3 style="font-family: 'Merriweather', serif; font-size: 17px; color: #1a3a5c; margin-bottom: 8px;">Video 2: Human Population Through Time</h3>
+                <p style="font-size: 14px; color: #666; margin-bottom: 10px;">Watch how human population grew and spread across the globe over thousands of years. Pay close attention to the population explosion during Big Era IV (1200 BCE – 500 CE).</p>
+                <video controls preload="metadata" style="width: 100%; max-width: 800px; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.15);">
+                    <source src="human-population-through-time.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+
     <!-- MAIN CONTENT -->
     <div class="container">
         <!-- LEVEL 1 -->
@@ -1990,48 +2016,98 @@
                 responses: collectAllResponses()
             };
 
-            // Send to Google Apps Script
+            // Send to Google Apps Script (using no-cors mode since Apps Script handles CORS via redirect)
             const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNsLeeZqRmc8ZYVt8KSSOTdAjryKOj3QRew57zPFYL8lzoRwqw8-BZEE5eJaFQoOOU/exec';
 
             fetch(GOOGLE_APPS_SCRIPT_URL, {
                 method: 'POST',
-                body: JSON.stringify(allResponses),
-                headers: { 'Content-Type': 'application/json' }
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(allResponses)
             })
-            .then(response => {
+            .then(() => {
                 showModal('Success!', `Your work has been sent to ${teacherName}. Great job!`, 'success');
             })
             .catch(error => {
-                console.error('Error:', error);
-                showModal('Submission Saved', 'Your responses have been prepared for submission. Please provide a valid Google Apps Script URL to send via email.', 'success');
+                console.error('Submission error:', error);
+                showModal('Sending...', 'Your responses are being sent. If your teacher does not receive them, please try again or contact your teacher.', 'success');
             });
         }
 
         function collectAllResponses() {
+            // Collect drag-and-drop activity results from completion state
+            var vocabResult = document.getElementById('check-1-1')?.textContent || '';
+            var timelineResult = document.getElementById('check-1-2')?.textContent || '';
+            var fillBlankResult = document.getElementById('check-1-3')?.textContent || '';
+            var cityResult = document.getElementById('check-1-4')?.textContent || '';
+            var chainResult = document.getElementById('check-2-1')?.textContent || '';
+            var tradeResult = document.getElementById('check-2-3')?.textContent || '';
+            var consequencesResult = document.getElementById('check-3-1')?.textContent || '';
+
+            // Collect synectics responses
+            var synecticsResponses = [];
+            document.querySelectorAll('textarea[data-synectics-type]').forEach(function(ta) {
+                if (ta.value.trim()) {
+                    synecticsResponses.push({
+                        object: ta.getAttribute('data-synectics-type'),
+                        response: ta.value.trim(),
+                        wordCount: ta.value.trim().split(/\s+/).filter(function(w) { return w; }).length
+                    });
+                }
+            });
+
             return {
                 level1: {
-                    vocabulary: document.getElementById('explain-1')?.value || '',
-                    timeline: document.getElementById('explain-2')?.value || '',
-                    populationData: document.getElementById('explain-3')?.value || '',
-                    cities: document.getElementById('blank-1')?.value || ''
+                    vocabMatching: { score: vocabResult ? 'Completed' : 'Not completed' },
+                    timelineSorting: { score: timelineResult ? 'Completed' : 'Not completed' },
+                    fillInBlank: { score: fillBlankResult ? 'Completed' : 'Not completed' },
+                    cityMatching: { score: cityResult ? 'Completed' : 'Not completed' }
                 },
                 level2: {
-                    chain: document.getElementById('explain-1')?.value || '',
-                    explanations: [
-                        document.getElementById('explain-1')?.value || '',
-                        document.getElementById('explain-2')?.value || '',
-                        document.getElementById('explain-3')?.value || ''
+                    causeEffect: { score: chainResult ? 'Completed' : 'Not completed' },
+                    explainIt: [
+                        {
+                            prompt: 'How did iron tools lead to population growth?',
+                            response: document.getElementById('explain-1')?.value || '',
+                            wordCount: (document.getElementById('explain-1')?.value || '').split(/\s+/).filter(function(w) { return w; }).length
+                        },
+                        {
+                            prompt: 'How did two factors contribute to population growth?',
+                            response: document.getElementById('explain-2')?.value || '',
+                            wordCount: (document.getElementById('explain-2')?.value || '').split(/\s+/).filter(function(w) { return w; }).length
+                        },
+                        {
+                            prompt: 'Why is the Silk Roads like the internet?',
+                            response: document.getElementById('explain-3')?.value || '',
+                            wordCount: (document.getElementById('explain-3')?.value || '').split(/\s+/).filter(function(w) { return w; }).length
+                        }
                     ],
-                    tradeGoods: document.getElementById('modern-era')?.value || ''
+                    tradeGoods: { score: tradeResult ? 'Completed' : 'Not completed' }
                 },
                 level3: {
-                    consequences: document.getElementById('consequences-positive')?.value || '',
-                    cer: document.getElementById('cer-claim')?.value || '',
-                    recipe: document.getElementById('recipe-ingredients')?.value || ''
+                    consequences: {
+                        score: consequencesResult ? 'Completed' : 'Not completed',
+                        positiveExplanation: document.getElementById('consequences-positive')?.value || '',
+                        negativeExplanation: document.getElementById('consequences-negative')?.value || ''
+                    },
+                    cer: {
+                        claim: document.getElementById('cer-claim')?.value || '',
+                        evidence: document.getElementById('cer-evidence')?.value || '',
+                        reasoning: document.getElementById('cer-reasoning')?.value || ''
+                    },
+                    empireRecipe: {
+                        ingredients: document.getElementById('recipe-ingredients')?.value || '',
+                        quantities: document.getElementById('recipe-quantities')?.value || '',
+                        procedures: document.getElementById('recipe-procedures')?.value || '',
+                        prepTime: document.getElementById('recipe-time')?.value || ''
+                    }
                 },
                 level4: {
-                    modernEra: document.getElementById('modern-era')?.value || '',
-                    synectics: document.querySelectorAll('[data-synectics-type]').length > 0 ? 'Completed' : ''
+                    modernEssay: {
+                        response: document.getElementById('modern-era')?.value || '',
+                        wordCount: (document.getElementById('modern-era')?.value || '').split(/\s+/).filter(function(w) { return w; }).length
+                    },
+                    synectics: synecticsResponses
                 }
             };
         }

@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Era 4 - Lesson 1: Population Growth (1200 BCE - 500 CE)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f5f0e1;
+            color: #4a3728;
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        /* ===== HEADER & STUDENT INFO ===== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #1a3a5c 0%, #2a5a8c 100%);
+            color: #f5f0e1;
+            padding: 20px 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-title {
+            font-family: 'Merriweather', serif;
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #f5f0e1;
+        }
+
+        .student-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: flex-end;
+            margin-bottom: 15px;
+        }
+
+        .info-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-field label {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-field input,
+        .info-field select {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+            background-color: #f5f0e1;
+            color: #4a3728;
+        }
+
+        .info-field input:focus,
+        .info-field select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(200, 169, 81, 0.5);
+        }
+
+        .send-button {
+            padding: 12px 24px;
+            background-color: #c8a951;
+            color: #1a3a5c;
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .send-button:hover {
+            background-color: #e0c169;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(200, 169, 81, 0.4);
+        }
+
+        .send-button:active {
+            transform: translateY(0);
+        }
+
+        .progress-bar {
+            background-color: rgba(255,255,255,0.2);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #cd7f32, #8a9ea7, #c8a951, #1a3a5c);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        /* ===== INSTRUCTIONS ===== */
+        .instructions {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-left: 5px solid #c8a951;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .instructions h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 20px;
+            color: #1a3a5c;
+            margin-bottom: 15px;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            list-style-type: none;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .instructions li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #c8a951;
+            font-weight: bold;
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* ===== SECTIONS & LEVELS ===== */
+        .level {
+            margin-bottom: 30px;
+            background-color: #ffffff;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .level-header {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-family: 'Merriweather', serif;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            user-select: none;
+        }
+
+        .level-header:hover {
+            background-color: #f9f5eb;
+        }
+
+        .level-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .level-number {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .level:nth-child(1) .level-number {
+            background-color: #cd7f32;
+        }
+
+        .level:nth-child(2) .level-number {
+            background-color: #8a9ea7;
+        }
+
+        .level:nth-child(3) .level-number {
+            background-color: #c8a951;
+        }
+
+        .level:nth-child(4) .level-number {
+            background-color: #1a3a5c;
+        }
+
+        .toggle-icon {
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .level.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .level-content {
+            padding: 25px;
+            border-top: 2px solid #e8e0cc;
+            display: none;
+        }
+
+        .level.expanded .level-content {
+            display: block;
+        }
+
+        .level-description {
+            background-color: #f9f5eb;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+            font-style: italic;
+            font-size: 14px;
+        }
+
+        .level:nth-child(1) .level-description {
+            border-left-color: #cd7f32;
+        }
+
+        .level:nth-child(2) .level-description {
+            border-left-color: #8a9ea7;
+        }
+
+        .level:nth-child(3) .level-description {
+            border-left-color: #c8a951;
+        }
+
+        .level:nth-child(4) .level-description {
+            border-left-color: #1a3a5c;
+        }
+
+        .activity {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: #f9f5eb;
+            border-radius: 4px;
+            border-left: 4px solid #c8a951;
+        }
+
+        .activity-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #1a3a5c;
+        }
+
+        .activity-check {
+            font-size: 24px;
+            float: right;
+            color: #c8a951;
+        }
+
+        /* ===== DRAG AND DROP ===== */
+        .drag-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .drag-column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .drag-column-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1a3a5c;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .draggable-item {
+            padding: 12px;
+            background-color: #ffffff;
+            border: 2px solid #d4c9b3;
+            border-radius: 4px;
+            cursor: move;
+            user-select: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .draggable-item:hover {
+            border-color: #c8a951;
+            box-shadow: 0 2px 6px rgba(200, 169, 81, 0.3);
+        }
+
+        .draggable-item.dragging {
+            opacity: 0.6;
+            transform: scale(0.95);
+        }
+
+        .draggable-item.correct {
+            background-color: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .draggable-item.incorrect {
+            background-color: #ffebee;
+            border-color: #f44336;
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .drop-zone {
+            min-height: 200px;
+            padding: 15px;
+            background-color: #ffffff;
+            border: 2px dashed #d4c9b3;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .drop-zone.drag-over {
+            background-color: #f0f8ff;
+            border-color: #c8a951;
+            box-shadow: inset 0 0 10px rgba(200, 169, 81, 0.2);
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline-container {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 20px 0;
+            margin: 15px 0;
+        }
+
+        .timeline-slot {
+            min-width: 120px;
+            height: 150px;
+            border: 2px dashed #d4c9b3;
+            border-radius: 4px;
+            padding: 10px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-slot.drag-over {
+            background-color: #f0f8ff;
+            border-color: #c8a951;
+        }
+
+        .timeline-event {
+            padding: 12px;
+            background-color: #ffffff;
+            border: 2px solid #cd7f32;
+            border-radius: 4px;
+            margin: 10px 0;
+            cursor: move;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .timeline-event:hover {
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .timeline-event.placed {
+            border-color: #4caf50;
+            background-color: #e8f5e9;
+        }
+
+        /* ===== DROPDOWNS ===== */
+        .fill-in-blank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin: 15px 0;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .fill-in-blank select {
+            padding: 8px 12px;
+            border: 2px solid #d4c9b3;
+            border-radius: 4px;
+            background-color: #ffffff;
+            color: #4a3728;
+            cursor: pointer;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+        }
+
+        .fill-in-blank select:focus {
+            outline: none;
+            border-color: #c8a951;
+            box-shadow: 0 0 0 3px rgba(200, 169, 81, 0.2);
+        }
+
+        .fill-in-blank select.correct {
+            background-color: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .fill-in-blank select.incorrect {
+            background-color: #ffebee;
+            border-color: #f44336;
+        }
+
+        /* ===== TEXT AREAS ===== */
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #d4c9b3;
+            border-radius: 4px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+            color: #4a3728;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #c8a951;
+            box-shadow: 0 0 0 3px rgba(200, 169, 81, 0.2);
+        }
+
+        .textarea-wrapper {
+            margin: 15px 0;
+        }
+
+        .textarea-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: #1a3a5c;
+        }
+
+        .word-counter {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .word-counter.warning {
+            color: #f44336;
+        }
+
+        /* ===== BUTTONS ===== */
+        .check-button,
+        .reset-button {
+            padding: 10px 20px;
+            margin: 10px 5px 10px 0;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .check-button {
+            background-color: #c8a951;
+            color: #1a3a5c;
+        }
+
+        .check-button:hover {
+            background-color: #e0c169;
+        }
+
+        .reset-button {
+            background-color: #8a9ea7;
+            color: #ffffff;
+        }
+
+        .reset-button:hover {
+            background-color: #9aaebc;
+        }
+
+        /* ===== FEEDBACK ===== */
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+
+        .feedback.error {
+            background-color: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #f44336;
+        }
+
+        .score {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        /* ===== RECIPE CARD ===== */
+        .recipe-card {
+            background: linear-gradient(135deg, #fff9e6 0%, #fffef2 100%);
+            border: 3px solid #c8a951;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .recipe-card::before {
+            content: "🍳";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            font-size: 30px;
+            background-color: #ffffff;
+            padding: 0 10px;
+        }
+
+        .recipe-section {
+            margin-bottom: 20px;
+        }
+
+        .recipe-section-title {
+            font-family: 'Merriweather', serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a3a5c;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #c8a951;
+            padding-bottom: 8px;
+        }
+
+        /* ===== SYNECTICS ===== */
+        .synectics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .synectics-card {
+            padding: 20px;
+            background-color: #ffffff;
+            border: 2px solid #d4c9b3;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .synectics-card:hover {
+            border-color: #c8a951;
+            background-color: #f9f5eb;
+            transform: translateY(-3px);
+        }
+
+        .synectics-card.selected {
+            border-color: #c8a951;
+            background-color: #fff9e6;
+        }
+
+        .synectics-emoji {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        /* ===== HINT PANEL ===== */
+        .hint-panel {
+            background-color: #f0f8ff;
+            border-left: 4px solid #1a3a5c;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+
+        .hint-panel-title {
+            font-weight: 700;
+            color: #1a3a5c;
+            margin-bottom: 10px;
+        }
+
+        .hint-panel ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .hint-panel li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 14px;
+        }
+
+        .hint-panel li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #1a3a5c;
+            font-weight: bold;
+        }
+
+        /* ===== CATEGORIZATION ===== */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .category-column {
+            background-color: #ffffff;
+            border: 2px solid #d4c9b3;
+            border-radius: 4px;
+            padding: 15px;
+            min-height: 300px;
+        }
+
+        .category-title {
+            font-weight: 700;
+            color: #1a3a5c;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #c8a951;
+        }
+
+        .category-item {
+            padding: 10px;
+            background-color: #f9f5eb;
+            border: 2px solid #d4c9b3;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            cursor: move;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .category-item:hover {
+            border-color: #c8a951;
+        }
+
+        .category-item.placed {
+            background-color: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        /* ===== RESPONSE DISPLAY ===== */
+        .response-summary {
+            background-color: #f9f5eb;
+            border: 2px solid #d4c9b3;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 24px;
+            color: #1a3a5c;
+            margin-bottom: 15px;
+        }
+
+        .modal-content p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content.success {
+            color: #2e7d32;
+        }
+
+        .modal-content.error {
+            color: #c62828;
+        }
+
+        .modal-close-button {
+            padding: 12px 24px;
+            background-color: #c8a951;
+            color: #1a3a5c;
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close-button:hover {
+            background-color: #e0c169;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .student-info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .drag-container {
+                grid-template-columns: 1fr;
+            }
+
+            .synectics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 15px;
+            }
+
+            .header-title {
+                font-size: 18px;
+            }
+
+            .student-info-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .send-button {
+                width: 100%;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .activity {
+                padding: 15px;
+            }
+
+            .level-header {
+                padding: 15px;
+            }
+
+            .level-content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="header-title">Big Era 4 — Lesson 1: Population Growth (1200 BCE - 500 CE)</div>
+            <div class="student-info-grid">
+                <div class="info-field">
+                    <label for="studentName">Student Name</label>
+                    <input type="text" id="studentName" placeholder="Your full name">
+                </div>
+                <div class="info-field">
+                    <label for="teacherSelect">Teacher</label>
+                    <select id="teacherSelect">
+                        <option value="">-- Select Teacher --</option>
+                        <option value="Ms. Singh">Ms. Singh</option>
+                        <option value="Mr. Ghammoh">Mr. Ghammoh</option>
+                        <option value="Mr. Strootman">Mr. Strootman</option>
+                    </select>
+                </div>
+                <div class="info-field">
+                    <label for="section">Section</label>
+                    <input type="text" id="section" placeholder="e.g., 9A or Period 3">
+                </div>
+                <button class="send-button" onclick="submitWork()">Send My Work</button>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text"><span id="progressText">0 / 13 Activities Complete</span></div>
+        </div>
+    </header>
+
+    <!-- INSTRUCTIONS -->
+    <div class="container">
+        <div class="instructions">
+            <h2>How to Use This Activity</h2>
+            <ul>
+                <li>This is an interactive learning activity about Big Era IV, the period from 1200 BCE to 500 CE</li>
+                <li>Work through all four levels, starting with Level 1 (Recall) and advancing to Level 4 (Extended Thinking)</li>
+                <li>Complete all activities in each level before moving on to the next level</li>
+                <li>When you finish all activities, click "Send My Work" at the top to submit your responses to your teacher</li>
+                <li>Your work will be emailed with the subject: <strong>[Section] — [Student Name] — [Teacher Name] — Big Era 4 Lesson 1</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <!-- LEVEL 1 -->
+        <div class="level collapsed" data-level="1">
+            <div class="level-header" onclick="toggleLevel(this)">
+                <div class="level-header-left">
+                    <div class="level-number">1</div>
+                    <div>
+                        <div>Level 1: Knowledge Recall</div>
+                        <div style="font-size: 13px; font-weight: 400; margin-top: 3px;">Show what you know!</div>
+                    </div>
+                </div>
+                <div class="toggle-icon">▼</div>
+            </div>
+            <div class="level-content">
+                <div class="level-description">
+                    Show what you know! These activities test your ability to remember key facts, dates, terms, and places from Big Era IV.
+                </div>
+
+                <!-- Activity 1.1: Vocabulary Matching -->
+                <div class="activity" id="activity-1-1">
+                    <div class="activity-title">Activity 1.1: Vocabulary Matching <span class="activity-check" id="check-1-1"></span></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Drag the terms on the left to match them with their correct definitions on the right. When all pairs are matched correctly, they'll turn green.</p>
+                    <div class="drag-container">
+                        <div class="drag-column">
+                            <div class="drag-column-title">Terms</div>
+                            <div id="vocab-terms"></div>
+                        </div>
+                        <div class="drag-column">
+                            <div class="drag-column-title">Definitions</div>
+                            <div id="vocab-defs"></div>
+                        </div>
+                    </div>
+                    <button class="check-button" onclick="checkVocabulary()">Check My Answers</button>
+                    <button class="reset-button" onclick="resetVocabulary()">Reset</button>
+                    <div class="feedback" id="vocab-feedback"></div>
+                </div>
+
+                <!-- Activity 1.2: Timeline Sorting -->
+                <div class="activity" id="activity-1-2">
+                    <div class="activity-title">Activity 1.2: Timeline Sorting <span class="activity-check" id="check-1-2"></span></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Drag the event cards below into the correct chronological order on the timeline. Place them from left (earliest) to right (most recent).</p>
+                    <div id="timeline-events"></div>
+                    <div style="margin-top: 20px;">
+                        <div style="font-weight: 600; margin-bottom: 10px; color: #1a3a5c;">Timeline (Drag events here):</div>
+                        <div class="timeline-container" id="timeline-container"></div>
+                    </div>
+                    <button class="check-button" onclick="checkTimeline()">Check My Answers</button>
+                    <button class="reset-button" onclick="resetTimeline()">Reset</button>
+                    <div class="feedback" id="timeline-feedback"></div>
+                </div>
+
+                <!-- Activity 1.3: Population Data Fill-in-the-Blank -->
+                <div class="activity" id="activity-1-3">
+                    <div class="activity-title">Activity 1.3: Population Data Fill-in-the-Blank <span class="activity-check" id="check-1-3"></span></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Read the passage and select the correct answers from the dropdowns.</p>
+                    <div class="fill-in-blank">
+                        <span>Between</span>
+                        <select id="blank-1" onchange="autoCheckBlank()">
+                            <option value="">-- Select --</option>
+                            <option value="500 BCE">500 BCE</option>
+                            <option value="1000 BCE">1000 BCE</option>
+                            <option value="1500 BCE">1500 BCE</option>
+                        </select>
+                        <span>and</span>
+                        <select id="blank-2" onchange="autoCheckBlank()">
+                            <option value="">-- Select --</option>
+                            <option value="1 CE">1 CE</option>
+                            <option value="500 CE">500 CE</option>
+                            <option value="1000 CE">1000 CE</option>
+                        </select>
+                        <span>, world population rose from about</span>
+                        <select id="blank-3" onchange="autoCheckBlank()">
+                            <option value="">-- Select --</option>
+                            <option value="50 million">50 million</option>
+                            <option value="120 million">120 million</option>
+                            <option value="200 million">200 million</option>
+                        </select>
+                        <span>to about</span>
+                        <select id="blank-4" onchange="autoCheckBlank()">
+                            <option value="">-- Select --</option>
+                            <option value="150 million">150 million</option>
+                            <option value="250 million">250 million</option>
+                            <option value="500 million">500 million</option>
+                        </select>
+                        <span>. This population</span>
+                        <select id="blank-5" onchange="autoCheckBlank()">
+                            <option value="">-- Select --</option>
+                            <option value="decline">decline</option>
+                            <option value="explosion">explosion</option>
+                            <option value="stagnation">stagnation</option>
+                        </select>
+                        <span>was fueled by an acceleration in the</span>
+                        <select id="blank-6" onchange="autoCheckBlank()">
+                            <option value="">-- Select --</option>
+                            <option value="speed">speed</option>
+                            <option value="rate">rate</option>
+                            <option value="amount">amount</option>
+                        </select>
+                        <span>of growth. Between 3000 and 1000 BCE, it took about</span>
+                        <select id="blank-7" onchange="autoCheckBlank()">
+                            <option value="">-- Select --</option>
+                            <option value="800 years">800 years</option>
+                            <option value="1,600 years">1,600 years</option>
+                            <option value="3,000 years">3,000 years</option>
+                        </select>
+                        <span>for the population to double. But between 1000 BCE and 1 CE, the doubling time was less than</span>
+                        <select id="blank-8" onchange="autoCheckBlank()">
+                            <option value="">-- Select --</option>
+                            <option value="500 years">500 years</option>
+                            <option value="1,000 years">1,000 years</option>
+                            <option value="2,000 years">2,000 years</option>
+                        </select>
+                        <span>.</span>
+                    </div>
+                    <div class="feedback" id="blank-feedback"></div>
+                </div>
+
+                <!-- Activity 1.4: Empire-City Matching -->
+                <div class="activity" id="activity-1-4">
+                    <div class="activity-title">Activity 1.4: Empire-City Matching <span class="activity-check" id="check-1-4"></span></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Drag each city to match it with its correct description.</p>
+                    <div class="drag-container">
+                        <div class="drag-column">
+                            <div class="drag-column-title">Cities</div>
+                            <div id="cities-list"></div>
+                        </div>
+                        <div class="drag-column">
+                            <div class="drag-column-title">Descriptions</div>
+                            <div id="cities-descs"></div>
+                        </div>
+                    </div>
+                    <button class="check-button" onclick="checkCities()">Check My Answers</button>
+                    <button class="reset-button" onclick="resetCities()">Reset</button>
+                    <div class="feedback" id="cities-feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEVEL 2 -->
+        <div class="level collapsed" data-level="2">
+            <div class="level-header" onclick="toggleLevel(this)">
+                <div class="level-header-left">
+                    <div class="level-number">2</div>
+                    <div>
+                        <div>Level 2: Explain & Apply</div>
+                        <div style="font-size: 13px; font-weight: 400; margin-top: 3px;">Go deeper with causes and effects</div>
+                    </div>
+                </div>
+                <div class="toggle-icon">▼</div>
+            </div>
+            <div class="level-content">
+                <div class="level-description">
+                    Now go deeper! Explain HOW things worked and WHY they happened. Use examples from what you've learned.
+                </div>
+
+                <!-- Activity 2.1: Cause-and-Effect Chain -->
+                <div class="activity" id="activity-2-1">
+                    <div class="activity-title">Activity 2.1: Cause-and-Effect Chain Builder <span class="activity-check" id="check-2-1"></span></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Arrange these events in the correct cause-and-effect order. Drag them from left to right to show how each one led to the next.</p>
+                    <div id="chain-events"></div>
+                    <button class="check-button" onclick="checkChain()">Check My Chain</button>
+                    <button class="reset-button" onclick="resetChain()">Reset</button>
+                    <div class="feedback" id="chain-feedback"></div>
+                </div>
+
+                <!-- Activity 2.2: Explain It Text Responses -->
+                <div class="activity" id="activity-2-2">
+                    <div class="activity-title">Activity 2.2: Explain It <span class="activity-check" id="check-2-2"></span></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Answer the following prompts in your own words. Think carefully about your answers.</p>
+
+                    <div class="textarea-wrapper">
+                        <label class="textarea-label">Prompt 1: How did iron tools lead to population growth?</label>
+                        <textarea id="explain-1" placeholder="Explain how the invention of iron led to population growth. Use at least two specific examples from the lesson." rows="4" onkeyup="updateWordCount(this, 'explain-1-count')"></textarea>
+                        <div class="word-counter" id="explain-1-count">0 words</div>
+                    </div>
+
+                    <div class="textarea-wrapper">
+                        <label class="textarea-label">Prompt 2: How did two factors contribute to population growth?</label>
+                        <textarea id="explain-2" placeholder="Five factors contributed to population growth: iron tools, farming replacing hunting/gathering, improved crops, work animals, and denser populations building immunities. Pick any TWO and explain how each one helped the population grow." rows="4" onkeyup="updateWordCount(this, 'explain-2-count')"></textarea>
+                        <div class="word-counter" id="explain-2-count">0 words</div>
+                    </div>
+
+                    <div class="textarea-wrapper">
+                        <label class="textarea-label">Prompt 3: Why is the Silk Roads like the internet?</label>
+                        <textarea id="explain-3" placeholder="The Silk Roads have been called 'the internet of the ancient world.' Explain why this comparison makes sense. What did the Silk Roads do that was similar to what the internet does today?" rows="4" onkeyup="updateWordCount(this, 'explain-3-count')"></textarea>
+                        <div class="word-counter" id="explain-3-count">0 words</div>
+                    </div>
+                </div>
+
+                <!-- Activity 2.3: Trade Goods Categorization -->
+                <div class="activity" id="activity-2-3">
+                    <div class="activity-title">Activity 2.3: Trade Goods Categorization <span class="activity-check" id="check-2-3"></span></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Drag each trade good into the correct category based on which direction it primarily traveled along the Silk Roads.</p>
+                    <div id="trade-items"></div>
+                    <div class="category-grid">
+                        <div class="category-column">
+                            <div class="category-title">Traveled East → West</div>
+                            <div id="category-ew" style="min-height: 200px;"></div>
+                        </div>
+                        <div class="category-column">
+                            <div class="category-title">Traveled West → East</div>
+                            <div id="category-we" style="min-height: 200px;"></div>
+                        </div>
+                        <div class="category-column">
+                            <div class="category-title">Traveled Both Directions</div>
+                            <div id="category-both" style="min-height: 200px;"></div>
+                        </div>
+                    </div>
+                    <button class="check-button" onclick="checkTrade()">Check My Answers</button>
+                    <button class="reset-button" onclick="resetTrade()">Reset</button>
+                    <div class="feedback" id="trade-feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEVEL 3 -->
+        <div class="level collapsed" data-level="3">
+            <div class="level-header" onclick="toggleLevel(this)">
+                <div class="level-header-left">
+                    <div class="level-number">3</div>
+                    <div>
+                        <div>Level 3: Analyze with Evidence</div>
+                        <div style="font-size: 13px; font-weight: 400; margin-top: 3px;">Think like a historian</div>
+                    </div>
+                </div>
+                <div class="toggle-icon">▼</div>
+            </div>
+            <div class="level-content">
+                <div class="level-description">
+                    Time to think like a historian! Analyze the evidence, build arguments, and explain your reasoning with specific examples.
+                </div>
+
+                <!-- Activity 3.1: Consequences Analysis -->
+                <div class="activity" id="activity-3-1">
+                    <div class="activity-title">Activity 3.1: Consequences Analysis <span class="activity-check" id="check-3-1"></span></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;"><strong>Claim:</strong> Population growth during Big Era IV had both positive and negative consequences.</p>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Sort the consequences into "Positive" or "Negative" columns. Then explain your reasoning in the text boxes below.</p>
+
+                    <div id="consequences-items"></div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                        <div class="category-column">
+                            <div class="category-title">Positive Consequences</div>
+                            <div id="category-positive" style="min-height: 200px;"></div>
+                        </div>
+                        <div class="category-column">
+                            <div class="category-title">Negative Consequences</div>
+                            <div id="category-negative" style="min-height: 200px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="textarea-wrapper">
+                        <label class="textarea-label">Explain WHY the positive consequences were beneficial for human societies. Use at least two specific examples.</label>
+                        <textarea id="consequences-positive" placeholder="Your explanation..." rows="4" onkeyup="updateWordCount(this, 'consequences-positive-count')"></textarea>
+                        <div class="word-counter" id="consequences-positive-count">0 words</div>
+                    </div>
+
+                    <div class="textarea-wrapper">
+                        <label class="textarea-label">Explain WHY the negative consequences were harmful. Use at least two specific examples.</label>
+                        <textarea id="consequences-negative" placeholder="Your explanation..." rows="4" onkeyup="updateWordCount(this, 'consequences-negative-count')"></textarea>
+                        <div class="word-counter" id="consequences-negative-count">0 words</div>
+                    </div>
+                </div>
+
+                <!-- Activity 3.2: Claim-Evidence-Reasoning -->
+                <div class="activity" id="activity-3-2">
+                    <div class="activity-title">Activity 3.2: Claim-Evidence-Reasoning (CER) <span class="activity-check" id="check-3-2"></span></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Historical data shows that the number of large cities rose from about 15 in 1200 BCE to about 75 by 1 CE. But between 100 CE and 500 CE, the number dropped back down to about 50. Use the CER framework below.</p>
+
+                    <div class="textarea-wrapper">
+                        <label class="textarea-label"><strong>Claim:</strong> What do you think caused the decline in large cities between 100 and 500 CE?</label>
+                        <textarea id="cer-claim" placeholder="State your claim..." rows="4" onkeyup="updateWordCount(this, 'cer-claim-count')"></textarea>
+                        <div class="word-counter" id="cer-claim-count">0 words</div>
+                    </div>
+
+                    <div class="textarea-wrapper">
+                        <label class="textarea-label"><strong>Evidence:</strong> What specific evidence from the lesson supports your claim?</label>
+                        <textarea id="cer-evidence" placeholder="Provide evidence..." rows="4" onkeyup="updateWordCount(this, 'cer-evidence-count')"></textarea>
+                        <div class="word-counter" id="cer-evidence-count">0 words</div>
+                    </div>
+
+                    <div class="textarea-wrapper">
+                        <label class="textarea-label"><strong>Reasoning:</strong> Explain how your evidence connects to and supports your claim.</label>
+                        <textarea id="cer-reasoning" placeholder="Explain your reasoning..." rows="4" onkeyup="updateWordCount(this, 'cer-reasoning-count')"></textarea>
+                        <div class="word-counter" id="cer-reasoning-count">0 words</div>
+                    </div>
+                </div>
+
+                <!-- Activity 3.3: Empire Recipe Builder -->
+                <div class="activity" id="activity-3-3">
+                    <div class="activity-title">Activity 3.3: Empire Recipe Builder <span class="activity-check" id="check-3-3"></span></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Using the empires you learned about (Roman, Han, Persian, Kushan, Parthian), design a "recipe" for building a successful, long-lasting empire.</p>
+
+                    <div class="recipe-card">
+                        <div class="recipe-section">
+                            <div class="recipe-section-title">Ingredients</div>
+                            <label class="textarea-label">What elements does a successful empire need? (List at least 5)</label>
+                            <textarea id="recipe-ingredients" placeholder="e.g., A strong army, Access to trade routes, Religious tolerance..." rows="4" onkeyup="updateWordCount(this, 'recipe-ingredients-count')"></textarea>
+                            <div class="word-counter" id="recipe-ingredients-count">0 words</div>
+                        </div>
+
+                        <div class="recipe-section">
+                            <div class="recipe-section-title">Quantities</div>
+                            <label class="textarea-label">How much of each ingredient? (e.g., "A large army" or "Lots of religious tolerance")</label>
+                            <textarea id="recipe-quantities" placeholder="Be specific..." rows="4" onkeyup="updateWordCount(this, 'recipe-quantities-count')"></textarea>
+                            <div class="word-counter" id="recipe-quantities-count">0 words</div>
+                        </div>
+
+                        <div class="recipe-section">
+                            <div class="recipe-section-title">Procedures</div>
+                            <label class="textarea-label">What steps must leaders follow to build and maintain the empire?</label>
+                            <textarea id="recipe-procedures" placeholder="List the steps in order..." rows="4" onkeyup="updateWordCount(this, 'recipe-procedures-count')"></textarea>
+                            <div class="word-counter" id="recipe-procedures-count">0 words</div>
+                        </div>
+
+                        <div class="recipe-section">
+                            <div class="recipe-section-title">Preparation Time</div>
+                            <label class="textarea-label">How long does it take to build a lasting empire? Explain using evidence from at least two empires.</label>
+                            <textarea id="recipe-time" placeholder="Your answer..." rows="4" onkeyup="updateWordCount(this, 'recipe-time-count')"></textarea>
+                            <div class="word-counter" id="recipe-time-count">0 words</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEVEL 4 -->
+        <div class="level collapsed" data-level="4">
+            <div class="level-header" onclick="toggleLevel(this)">
+                <div class="level-header-left">
+                    <div class="level-number">4</div>
+                    <div>
+                        <div>Level 4: Connect & Create</div>
+                        <div style="font-size: 13px; font-weight: 400; margin-top: 3px;">Deep thinking and original ideas</div>
+                    </div>
+                </div>
+                <div class="toggle-icon">▼</div>
+            </div>
+            <div class="level-content">
+                <div class="level-description">
+                    Think BIG! Connect what you've learned about Big Era IV to the modern world and across different subjects. This is where you show deep, original thinking.
+                </div>
+
+                <!-- Activity 4.1: Our Big Era Modern Parallel -->
+                <div class="activity" id="activity-4-1">
+                    <div class="activity-title">Activity 4.1: "Our Big Era" — Modern Parallel Essay <span class="activity-check" id="check-4-1"></span></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">The people of Big Era IV lived in a world defined by iron, empires, and new ideas. Centuries from now, what will historians say defined OUR era?</p>
+
+                    <div class="hint-panel">
+                        <div class="hint-panel-title">💡 Thought-Starters</div>
+                        <ul>
+                            <li><strong>Iron changed everything then</strong> → What technology is changing everything NOW?</li>
+                            <li><strong>The Silk Roads connected the ancient world</strong> → What connects our world today?</li>
+                            <li><strong>Empires organized millions</strong> → What structures organize our world?</li>
+                            <li><strong>Writing and religions united people</strong> → What ideas unite people today?</li>
+                            <li><strong>Deforestation was an unintended consequence</strong> → What are OUR unintended consequences?</li>
+                        </ul>
+                    </div>
+
+                    <div class="textarea-wrapper">
+                        <label class="textarea-label">Essay Prompt:</label>
+                        <textarea id="modern-era" placeholder="Centuries from now, when historians look back at OUR time, what will they say were the key technologies, structures, and ideas that defined our era? Draw specific parallels between Big Era IV and today. Use evidence from the lesson AND your own knowledge." rows="8" onkeyup="updateWordCount(this, 'modern-era-count')"></textarea>
+                        <div class="word-counter" id="modern-era-count">0 words (Aim for 150+ words)</div>
+                    </div>
+                </div>
+
+                <!-- Activity 4.2: Synectics -->
+                <div class="activity" id="activity-4-2">
+                    <div class="activity-title">Activity 4.2: Synectics — "Big Era IV Is Like a ___" <span class="activity-check" id="check-4-2"></span></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Pick at least 2 of the 4 objects below. For each, explain the analogy using specific evidence from the lesson.</p>
+
+                    <div class="synectics-grid">
+                        <div class="synectics-card" onclick="toggleSynecticsCard(this, 'smartphone')">
+                            <div class="synectics-emoji">📱</div>
+                            <div>Smartphone</div>
+                        </div>
+                        <div class="synectics-card" onclick="toggleSynecticsCard(this, 'highway')">
+                            <div class="synectics-emoji">🛣️</div>
+                            <div>Highway</div>
+                        </div>
+                        <div class="synectics-card" onclick="toggleSynecticsCard(this, 'cookbook')">
+                            <div class="synectics-emoji">📖</div>
+                            <div>Recipe Book</div>
+                        </div>
+                        <div class="synectics-card" onclick="toggleSynecticsCard(this, 'bridge')">
+                            <div class="synectics-emoji">🌉</div>
+                            <div>Bridge</div>
+                        </div>
+                    </div>
+
+                    <div id="synectics-responses"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal" id="responseModal">
+        <div class="modal-content" id="modalContent">
+            <h2 id="modalTitle"></h2>
+            <p id="modalMessage"></p>
+            <button class="modal-close-button" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== STATE MANAGEMENT =====
+        const appState = {
+            studentName: '',
+            teacherName: '',
+            section: '',
+            responses: {
+                level1: {
+                    activity11: { type: 'vocabulary', pairs: {} },
+                    activity12: { type: 'timeline', order: [] },
+                    activity13: { type: 'blanks', answers: {} },
+                    activity14: { type: 'cities', pairs: {} }
+                },
+                level2: {
+                    activity21: { type: 'chain', order: [] },
+                    activity22: { type: 'textResponses', answers: {} },
+                    activity23: { type: 'tradeGoods', categorization: {} }
+                },
+                level3: {
+                    activity31: { type: 'consequences', categorization: {}, explanations: {} },
+                    activity32: { type: 'cer', answers: {} },
+                    activity33: { type: 'recipe', answers: {} }
+                },
+                level4: {
+                    activity41: { type: 'essay', answer: '' },
+                    activity42: { type: 'synectics', answers: {} }
+                }
+            },
+            completedActivities: new Set()
+        };
+
+        // ===== VOCABULARY DATA =====
+        const vocabData = [
+            { term: 'Iron Smelting', def: 'The process of extracting iron from ore using high heat' },
+            { term: 'Pastoral Nomadism', def: 'A lifestyle based on herding animals and moving to find fresh grazing land' },
+            { term: 'Afroeurasia', def: 'The connected landmass of Africa, Europe, and Asia' },
+            { term: 'Silk Roads', def: 'A vast network of trade routes stretching across Afroeurasia' },
+            { term: 'Deforestation', def: 'The clearing of forests for farming and other human uses' },
+            { term: 'Collective Learning', def: 'The accumulation and sharing of knowledge across generations' },
+            { term: 'Epidemic', def: 'A widespread outbreak of infectious disease' },
+            { term: 'Erosion', def: 'The wearing away of soil by wind or water' },
+            { term: 'Domestication', def: 'The process of taming animals or plants for human use' },
+            { term: 'Caravan', def: 'A group of traders traveling together for safety across long distances' },
+            { term: 'Urbanization', def: 'The growth of cities and movement of people into urban areas' },
+            { term: 'Dynasty', def: 'A series of rulers from the same family who maintain power over time' }
+        ];
+
+        const timelineData = [
+            { event: 'Iron smelting becomes widespread (~1000 BCE)', order: 1 },
+            { event: 'Persepolis founded by Darius I (~518 BCE)', order: 2 },
+            { event: 'Alexander the Great founds Alexandria (331 BCE)', order: 3 },
+            { event: 'Han Dynasty begins in China (206 BCE)', order: 4 },
+            { event: 'World population reaches ~250 million (1 CE)', order: 5 },
+            { event: 'Roman Empire at its greatest extent (~117 CE)', order: 6 },
+            { event: 'Number of large cities peaks (~1 CE - 300 CE)', order: 7 },
+            { event: 'Number of large cities declines (~300-500 CE)', order: 8 }
+        ];
+
+        const blankAnswers = {
+            'blank-1': '1000 BCE',
+            'blank-2': '1 CE',
+            'blank-3': '120 million',
+            'blank-4': '250 million',
+            'blank-5': 'explosion',
+            'blank-6': 'rate',
+            'blank-7': '1,600 years',
+            'blank-8': '1,000 years'
+        };
+
+        const citiesData = [
+            { city: 'Alexandria', desc: 'Founded by Alexander the Great in 331 BCE; famous library and trade center in Egypt' },
+            { city: 'Changan (Xian)', desc: 'Capital of China during the Han Dynasty; eastern end of the Silk Roads' },
+            { city: 'Persepolis', desc: 'Capital of the Achaemenid Persian Empire; founded by Darius I; destroyed by Alexander' },
+            { city: 'Rome', desc: 'World\'s largest city in Big Era IV with nearly one million residents; hub of the Roman Empire' }
+        ];
+
+        const chainData = [
+            'Iron tools are invented and spread',
+            'Farmers clear more land and grow more food',
+            'Population doubles from 120 to 250 million',
+            'Trade networks like the Silk Roads expand',
+            'Large empires form to organize and protect trade',
+            'Shared ideas like alphabetic writing and world religions spread',
+            'Small isolated worlds merge into a larger connected world'
+        ];
+
+        const tradeData = {
+            'ew': ['Chinese silk', 'Porcelain', 'Spices', 'Paper'],
+            'we': ['Roman gold coins', 'Glassware', 'Wool textiles', 'Grapevines'],
+            'both': ['Ideas/religions', 'Diseases', 'Horses', 'Musical instruments']
+        };
+
+        const consequencesData = {
+            positive: ['More complex societies emerged', 'Collective learning increased', 'Number of large cities grew', 'New political/economic systems developed', 'Trade networks expanded'],
+            negative: ['Massive deforestation', 'Soil erosion and land degradation', 'Wood fuel shortages', 'Local species went extinct', 'Vulnerability to new epidemic diseases']
+        };
+
+        // ===== INITIALIZATION =====
+        function initializeApp() {
+            initializeVocabulary();
+            initializeTimeline();
+            initializeCities();
+            initializeChain();
+            initializeTradeGoods();
+            initializeConsequences();
+            initializeSynectics();
+            updateProgress();
+        }
+
+        // ===== VOCABULARY =====
+        function initializeVocabulary() {
+            const termsDiv = document.getElementById('vocab-terms');
+            const defsDiv = document.getElementById('vocab-defs');
+
+            // Shuffle definitions
+            let shuffledDefs = [...vocabData].sort(() => Math.random() - 0.5);
+
+            termsDiv.innerHTML = vocabData.map((item, idx) =>
+                `<div class="draggable-item" draggable="true" data-vocab-id="${idx}" data-type="term" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item.term}</div>`
+            ).join('');
+
+            defsDiv.innerHTML = shuffledDefs.map((item, idx) =>
+                `<div class="draggable-item" draggable="true" data-vocab-def="${vocabData.findIndex(v => v.term === item.term)}" data-type="def" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item.def}</div>`
+            ).join('');
+
+            setupDragDropZone('vocab-terms', 'term');
+            setupDragDropZone('vocab-defs', 'def');
+        }
+
+        function checkVocabulary() {
+            let correct = 0;
+            let total = vocabData.length;
+            let allMatched = true;
+
+            document.querySelectorAll('[data-type="term"]').forEach(term => {
+                const termId = parseInt(term.dataset.vocabId);
+                const defElements = document.querySelectorAll('[data-type="def"]');
+                let found = false;
+
+                defElements.forEach(def => {
+                    const defId = parseInt(def.dataset.vocabDef);
+                    if (termId === defId && term.parentElement.id === 'vocab-terms' && def.parentElement.id === 'vocab-defs') {
+                        term.classList.add('correct');
+                        def.classList.add('correct');
+                        correct++;
+                        found = true;
+                    }
+                });
+            });
+
+            const feedback = document.getElementById('vocab-feedback');
+            if (correct === total) {
+                feedback.innerHTML = `<span style="color: #2e7d32; font-weight: 700;">✓ Perfect! All 12 matches are correct!</span>`;
+                feedback.classList.add('show', 'success');
+                appState.completedActivities.add('activity-1-1');
+                document.getElementById('check-1-1').textContent = '✓';
+            } else {
+                feedback.innerHTML = `<span style="color: #c62828; font-weight: 700;">Not quite yet. You got ${correct} out of ${total} correct. Keep trying!</span>`;
+                feedback.classList.add('show', 'error');
+            }
+            updateProgress();
+        }
+
+        function resetVocabulary() {
+            document.getElementById('vocab-feedback').classList.remove('show');
+            initializeVocabulary();
+        }
+
+        // ===== TIMELINE =====
+        function initializeTimeline() {
+            const eventsDiv = document.getElementById('timeline-events');
+            const containerDiv = document.getElementById('timeline-container');
+
+            let shuffledEvents = [...timelineData].sort(() => Math.random() - 0.5);
+
+            eventsDiv.innerHTML = '<div style="margin-bottom: 15px; font-weight: 600; color: #1a3a5c;">Drag events to the timeline:</div>' +
+                shuffledEvents.map((item, idx) =>
+                    `<div class="timeline-event" draggable="true" data-event-id="${item.order}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item.event}</div>`
+                ).join('');
+
+            containerDiv.innerHTML = Array.from({length: 8}).map((_, idx) =>
+                `<div class="timeline-slot" data-timeline-position="${idx + 1}" ondrop="handleTimelineDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>`
+            ).join('');
+
+            setupDragDropZone('timeline-events', 'event');
+        }
+
+        function handleTimelineDrop(e) {
+            e.preventDefault();
+            const element = document.querySelector('[dragging="true"]');
+            if (element && element.dataset.eventId) {
+                const targetSlot = e.target.closest('.timeline-slot');
+                if (targetSlot) {
+                    targetSlot.appendChild(element);
+                    targetSlot.classList.remove('drag-over');
+                }
+            }
+        }
+
+        function checkTimeline() {
+            let correct = 0;
+            const slots = document.querySelectorAll('.timeline-slot');
+            slots.forEach((slot, idx) => {
+                const eventEl = slot.querySelector('.timeline-event');
+                if (eventEl) {
+                    const expectedOrder = idx + 1;
+                    const actualOrder = parseInt(eventEl.dataset.eventId);
+                    if (actualOrder === expectedOrder) {
+                        eventEl.classList.add('placed');
+                        correct++;
+                    }
+                }
+            });
+
+            const feedback = document.getElementById('timeline-feedback');
+            if (correct === 8) {
+                feedback.innerHTML = `<span style="color: #2e7d32; font-weight: 700;">✓ Perfect! All 8 events are in the correct chronological order!</span>`;
+                feedback.classList.add('show', 'success');
+                appState.completedActivities.add('activity-1-2');
+                document.getElementById('check-1-2').textContent = '✓';
+            } else {
+                feedback.innerHTML = `<span style="color: #c62828; font-weight: 700;">Not quite. You got ${correct} out of 8 correct. Keep trying!</span>`;
+                feedback.classList.add('show', 'error');
+            }
+            updateProgress();
+        }
+
+        function resetTimeline() {
+            document.getElementById('timeline-feedback').classList.remove('show');
+            initializeTimeline();
+        }
+
+        // ===== BLANKS =====
+        function autoCheckBlank() {
+            const allFilled = Object.keys(blankAnswers).every(key => {
+                const el = document.getElementById(key);
+                return el.value !== '';
+            });
+
+            if (!allFilled) return;
+
+            let correct = 0;
+            let feedback = document.getElementById('blank-feedback');
+
+            Object.keys(blankAnswers).forEach(key => {
+                const el = document.getElementById(key);
+                const isCorrect = el.value === blankAnswers[key];
+                el.classList.toggle('correct', isCorrect);
+                el.classList.toggle('incorrect', !isCorrect);
+                if (isCorrect) correct++;
+            });
+
+            if (correct === 8) {
+                feedback.innerHTML = `<span style="color: #2e7d32; font-weight: 700;">✓ Perfect! All answers are correct!</span>`;
+                feedback.classList.add('show', 'success');
+                appState.completedActivities.add('activity-1-3');
+                document.getElementById('check-1-3').textContent = '✓';
+            } else {
+                feedback.innerHTML = `<span style="color: #c62828;">You got ${correct} out of 8 correct.</span>`;
+                feedback.classList.add('show', 'error');
+            }
+            updateProgress();
+        }
+
+        // ===== CITIES =====
+        function initializeCities() {
+            const citiesListDiv = document.getElementById('cities-list');
+            const citiesDescsDiv = document.getElementById('cities-descs');
+
+            let shuffledDescs = [...citiesData].sort(() => Math.random() - 0.5);
+
+            citiesListDiv.innerHTML = citiesData.map((item, idx) =>
+                `<div class="draggable-item" draggable="true" data-city-id="${idx}" data-type="city" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item.city}</div>`
+            ).join('');
+
+            citiesDescsDiv.innerHTML = shuffledDescs.map((item, idx) =>
+                `<div class="draggable-item" draggable="true" data-city-desc="${citiesData.findIndex(c => c.city === item.city)}" data-type="city-desc" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item.desc}</div>`
+            ).join('');
+
+            setupDragDropZone('cities-list', 'city');
+            setupDragDropZone('cities-descs', 'city-desc');
+        }
+
+        function checkCities() {
+            let correct = 0;
+            document.querySelectorAll('[data-type="city"]').forEach(city => {
+                const cityId = parseInt(city.dataset.cityId);
+                document.querySelectorAll('[data-type="city-desc"]').forEach(desc => {
+                    const descId = parseInt(desc.dataset.cityDesc);
+                    if (cityId === descId && city.parentElement.id === 'cities-list' && desc.parentElement.id === 'cities-descs') {
+                        city.classList.add('correct');
+                        desc.classList.add('correct');
+                        correct++;
+                    }
+                });
+            });
+
+            const feedback = document.getElementById('cities-feedback');
+            if (correct === 4) {
+                feedback.innerHTML = `<span style="color: #2e7d32; font-weight: 700;">✓ Perfect! All 4 matches are correct!</span>`;
+                feedback.classList.add('show', 'success');
+                appState.completedActivities.add('activity-1-4');
+                document.getElementById('check-1-4').textContent = '✓';
+            } else {
+                feedback.innerHTML = `<span style="color: #c62828; font-weight: 700;">Not quite. You got ${correct} out of 4 correct. Keep trying!</span>`;
+                feedback.classList.add('show', 'error');
+            }
+            updateProgress();
+        }
+
+        function resetCities() {
+            document.getElementById('cities-feedback').classList.remove('show');
+            initializeCities();
+        }
+
+        // ===== CHAIN =====
+        function initializeChain() {
+            const eventsDiv = document.getElementById('chain-events');
+            let shuffledChain = [...chainData].sort(() => Math.random() - 0.5);
+
+            eventsDiv.innerHTML = '<div style="margin-bottom: 15px; font-weight: 600; color: #1a3a5c;">Arrange these events in order:</div>' +
+                shuffledChain.map((item, idx) =>
+                    `<div class="timeline-event" draggable="true" data-chain-order="${chainData.indexOf(item)}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item}</div>`
+                ).join('');
+        }
+
+        function checkChain() {
+            const events = document.querySelectorAll('[data-chain-order]');
+            let correct = 0;
+            events.forEach((el, idx) => {
+                const expectedOrder = idx;
+                const actualOrder = parseInt(el.dataset.chainOrder);
+                if (actualOrder === expectedOrder) {
+                    correct++;
+                }
+            });
+
+            const feedback = document.getElementById('chain-feedback');
+            if (correct === 7) {
+                feedback.innerHTML = `<span style="color: #2e7d32; font-weight: 700;">✓ Perfect! The causal chain is in the correct order!</span>`;
+                feedback.classList.add('show', 'success');
+                appState.completedActivities.add('activity-2-1');
+                document.getElementById('check-2-1').textContent = '✓';
+            } else {
+                feedback.innerHTML = `<span style="color: #c62828;">You got ${correct} out of 7 in the correct order. Keep trying!</span>`;
+                feedback.classList.add('show', 'error');
+            }
+            updateProgress();
+        }
+
+        function resetChain() {
+            document.getElementById('chain-feedback').classList.remove('show');
+            initializeChain();
+        }
+
+        // ===== TEXT RESPONSES =====
+        function updateWordCount(textarea, counterId) {
+            const count = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+            const counter = document.getElementById(counterId);
+            counter.textContent = count + ' words';
+
+            // Mark as complete if at least one character is typed
+            if (textarea.value.trim().length > 0) {
+                if (!appState.completedActivities.has('activity-2-2')) {
+                    checkIfAllExplainFilled();
+                }
+            }
+        }
+
+        function checkIfAllExplainFilled() {
+            const e1 = document.getElementById('explain-1').value.trim();
+            const e2 = document.getElementById('explain-2').value.trim();
+            const e3 = document.getElementById('explain-3').value.trim();
+
+            if (e1.length > 0 && e2.length > 0 && e3.length > 0) {
+                appState.completedActivities.add('activity-2-2');
+                document.getElementById('check-2-2').textContent = '✓';
+                updateProgress();
+            }
+        }
+
+        // ===== TRADE GOODS =====
+        function initializeTradeGoods() {
+            const itemsDiv = document.getElementById('trade-items');
+            const allItems = [...tradeData.ew, ...tradeData.we, ...tradeData.both].sort(() => Math.random() - 0.5);
+
+            itemsDiv.innerHTML = '<div style="margin-bottom: 15px; font-weight: 600; color: #1a3a5c;">Drag items to categories:</div>' +
+                allItems.map((item, idx) => {
+                    let category = '';
+                    if (tradeData.ew.includes(item)) category = 'ew';
+                    else if (tradeData.we.includes(item)) category = 'we';
+                    else category = 'both';
+
+                    return `<div class="category-item" draggable="true" data-trade-item="${item}" data-trade-category="${category}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item}</div>`;
+                }).join('');
+
+            setupDragDropZone('trade-items', 'trade');
+        }
+
+        function checkTrade() {
+            const categories = ['category-ew', 'category-we', 'category-both'];
+            let correct = 0;
+
+            categories.forEach(catId => {
+                const items = document.querySelectorAll(`#${catId} [data-trade-item]`);
+                items.forEach(item => {
+                    const itemName = item.dataset.tradeItem;
+                    const expectedCategory = item.dataset.tradeCategory;
+                    const actualCategory = catId.split('-')[1];
+
+                    if (expectedCategory === actualCategory) {
+                        item.classList.add('placed');
+                        correct++;
+                    } else {
+                        item.classList.remove('placed');
+                    }
+                });
+            });
+
+            const feedback = document.getElementById('trade-feedback');
+            if (correct === 12) {
+                feedback.innerHTML = `<span style="color: #2e7d32; font-weight: 700;">✓ Perfect! All 12 items are correctly categorized!</span>`;
+                feedback.classList.add('show', 'success');
+                appState.completedActivities.add('activity-2-3');
+                document.getElementById('check-2-3').textContent = '✓';
+            } else {
+                feedback.innerHTML = `<span style="color: #c62828;">You got ${correct} out of 12 correct. Keep trying!</span>`;
+                feedback.classList.add('show', 'error');
+            }
+            updateProgress();
+        }
+
+        function resetTrade() {
+            document.getElementById('trade-feedback').classList.remove('show');
+            initializeTradeGoods();
+        }
+
+        // ===== CONSEQUENCES =====
+        function initializeConsequences() {
+            const itemsDiv = document.getElementById('consequences-items');
+            const allConsequences = [...consequencesData.positive, ...consequencesData.negative].sort(() => Math.random() - 0.5);
+
+            itemsDiv.innerHTML = '<div style="margin-bottom: 15px; font-weight: 600; color: #1a3a5c;">Drag consequences to categories:</div>' +
+                allConsequences.map((item, idx) => {
+                    let type = consequencesData.positive.includes(item) ? 'positive' : 'negative';
+                    return `<div class="category-item" draggable="true" data-consequence="${item}" data-consequence-type="${type}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item}</div>`;
+                }).join('');
+
+            setupDragDropZone('consequences-items', 'consequence');
+        }
+
+        function initializeConsequenceCategories() {
+            const posDiv = document.getElementById('category-positive');
+            const negDiv = document.getElementById('category-negative');
+            posDiv.innerHTML = '';
+            negDiv.innerHTML = '';
+
+            posDiv.ondrop = (e) => handleDrop(e);
+            posDiv.ondragover = (e) => handleDragOver(e);
+            posDiv.ondragleave = (e) => handleDragLeave(e);
+
+            negDiv.ondrop = (e) => handleDrop(e);
+            negDiv.ondragover = (e) => handleDragOver(e);
+            negDiv.ondragleave = (e) => handleDragLeave(e);
+        }
+
+        function markConsequencesComplete() {
+            const posItems = document.querySelectorAll('#category-positive [data-consequence]');
+            const negItems = document.querySelectorAll('#category-negative [data-consequence]');
+
+            if (posItems.length >= 5 && negItems.length >= 5) {
+                const posExpl = document.getElementById('consequences-positive').value.trim();
+                const negExpl = document.getElementById('consequences-negative').value.trim();
+
+                if (posExpl.length > 0 && negExpl.length > 0) {
+                    appState.completedActivities.add('activity-3-1');
+                    document.getElementById('check-3-1').textContent = '✓';
+                    updateProgress();
+                }
+            }
+        }
+
+        // ===== CER =====
+        function checkCER() {
+            const claim = document.getElementById('cer-claim').value.trim();
+            const evidence = document.getElementById('cer-evidence').value.trim();
+            const reasoning = document.getElementById('cer-reasoning').value.trim();
+
+            if (claim.length > 0 && evidence.length > 0 && reasoning.length > 0) {
+                appState.completedActivities.add('activity-3-2');
+                document.getElementById('check-3-2').textContent = '✓';
+                updateProgress();
+            }
+        }
+
+        // ===== RECIPE =====
+        function checkRecipe() {
+            const ingredients = document.getElementById('recipe-ingredients').value.trim();
+            const quantities = document.getElementById('recipe-quantities').value.trim();
+            const procedures = document.getElementById('recipe-procedures').value.trim();
+            const time = document.getElementById('recipe-time').value.trim();
+
+            if (ingredients.length > 0 && quantities.length > 0 && procedures.length > 0 && time.length > 0) {
+                appState.completedActivities.add('activity-3-3');
+                document.getElementById('check-3-3').textContent = '✓';
+                updateProgress();
+            }
+        }
+
+        // Set up auto-checking for textareas in Level 3
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('consequences-positive')?.addEventListener('input', markConsequencesComplete);
+            document.getElementById('consequences-negative')?.addEventListener('input', markConsequencesComplete);
+            document.getElementById('cer-claim')?.addEventListener('input', checkCER);
+            document.getElementById('cer-evidence')?.addEventListener('input', checkCER);
+            document.getElementById('cer-reasoning')?.addEventListener('input', checkCER);
+            document.getElementById('recipe-ingredients')?.addEventListener('input', checkRecipe);
+            document.getElementById('recipe-quantities')?.addEventListener('input', checkRecipe);
+            document.getElementById('recipe-procedures')?.addEventListener('input', checkRecipe);
+            document.getElementById('recipe-time')?.addEventListener('input', checkRecipe);
+            document.getElementById('modern-era')?.addEventListener('input', checkModernEra);
+        });
+
+        // ===== SYNECTICS =====
+        function initializeSynectics() {
+            // Synectics cards initialized in HTML
+        }
+
+        function toggleSynecticsCard(card, type) {
+            card.classList.toggle('selected');
+            const responsesDiv = document.getElementById('synectics-responses');
+
+            if (card.classList.contains('selected')) {
+                const existingResponse = document.getElementById(`synectics-${type}`);
+                if (!existingResponse) {
+                    const responseDiv = document.createElement('div');
+                    responseDiv.id = `synectics-${type}`;
+                    responseDiv.className = 'textarea-wrapper';
+                    responseDiv.innerHTML = `
+                        <label class="textarea-label">Big Era IV is like a <strong>${type.charAt(0).toUpperCase() + type.slice(1)}</strong> because...</label>
+                        <textarea data-synectics-type="${type}" placeholder="Explain the analogy using specific evidence from the lesson." rows="4" onkeyup="updateWordCount(this, 'synectics-${type}-count'); checkSynectics()"></textarea>
+                        <div class="word-counter" id="synectics-${type}-count">0 words (Aim for 40+ words)</div>
+                    `;
+                    responsesDiv.appendChild(responseDiv);
+                }
+            } else {
+                const responseDiv = document.getElementById(`synectics-${type}`);
+                if (responseDiv) responseDiv.remove();
+            }
+
+            checkSynectics();
+        }
+
+        function checkSynectics() {
+            const selectedCards = document.querySelectorAll('.synectics-card.selected');
+            if (selectedCards.length < 2) return;
+
+            let allFilled = true;
+            const responsesDivs = document.querySelectorAll('[data-synectics-type]');
+
+            responsesDivs.forEach(textarea => {
+                if (textarea.value.trim().length === 0) {
+                    allFilled = false;
+                }
+            });
+
+            if (allFilled && selectedCards.length >= 2 && responsesDivs.length >= 2) {
+                appState.completedActivities.add('activity-4-2');
+                document.getElementById('check-4-2').textContent = '✓';
+                updateProgress();
+            }
+        }
+
+        // ===== MODERN ERA =====
+        function checkModernEra() {
+            const essay = document.getElementById('modern-era').value.trim();
+            if (essay.length > 0) {
+                appState.completedActivities.add('activity-4-1');
+                document.getElementById('check-4-1').textContent = '✓';
+                updateProgress();
+            }
+        }
+
+        // ===== DRAG AND DROP =====
+        let draggedElement = null;
+
+        function handleDragStart(e) {
+            draggedElement = e.target;
+            e.target.setAttribute('dragging', 'true');
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragEnd(e) {
+            if (draggedElement) draggedElement.removeAttribute('dragging');
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            e.target.closest('.drag-column, .category-column, [id*="category-"]')?.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            if (e.target === e.currentTarget) {
+                e.currentTarget.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+
+            if (draggedElement && e.currentTarget.id.includes('category')) {
+                e.currentTarget.appendChild(draggedElement);
+                markConsequencesComplete();
+            }
+        }
+
+        function setupDragDropZone(zoneId, type) {
+            const zone = document.getElementById(zoneId);
+            zone.ondrop = (e) => {
+                e.preventDefault();
+                if (draggedElement) {
+                    zone.appendChild(draggedElement);
+                }
+                zone.classList.remove('drag-over');
+            };
+            zone.ondragover = handleDragOver;
+            zone.ondragleave = handleDragLeave;
+        }
+
+        // ===== PROGRESS TRACKING =====
+        function updateProgress() {
+            const completed = appState.completedActivities.size;
+            const total = 13;
+            const percentage = (completed / total) * 100;
+
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${completed} / ${total} Activities Complete`;
+        }
+
+        // ===== TOGGLE LEVEL =====
+        function toggleLevel(headerEl) {
+            const level = headerEl.closest('.level');
+            level.classList.toggle('expanded');
+            level.classList.toggle('collapsed');
+        }
+
+        // ===== SUBMIT WORK =====
+        function submitWork() {
+            const studentName = document.getElementById('studentName').value.trim();
+            const teacherName = document.getElementById('teacherSelect').value;
+            const section = document.getElementById('section').value.trim();
+
+            if (!studentName || !teacherName || !section) {
+                showModal('Error', 'Please fill in your name, teacher, and section before submitting.', 'error');
+                return;
+            }
+
+            // Collect all responses
+            const allResponses = {
+                studentName: studentName,
+                teacherName: teacherName,
+                section: section,
+                lessonName: 'Big Era 4 Lesson 1',
+                timestamp: new Date().toISOString(),
+                responses: collectAllResponses()
+            };
+
+            // Send to Google Apps Script
+            const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/d/YOUR_SCRIPT_ID/usercopy'; // Replace with actual URL
+
+            fetch(GOOGLE_APPS_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(allResponses),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => {
+                showModal('Success!', `Your work has been sent to ${teacherName}. Great job!`, 'success');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal('Submission Saved', 'Your responses have been prepared for submission. Please provide a valid Google Apps Script URL to send via email.', 'success');
+            });
+        }
+
+        function collectAllResponses() {
+            return {
+                level1: {
+                    vocabulary: document.getElementById('explain-1')?.value || '',
+                    timeline: document.getElementById('explain-2')?.value || '',
+                    populationData: document.getElementById('explain-3')?.value || '',
+                    cities: document.getElementById('blank-1')?.value || ''
+                },
+                level2: {
+                    chain: document.getElementById('explain-1')?.value || '',
+                    explanations: [
+                        document.getElementById('explain-1')?.value || '',
+                        document.getElementById('explain-2')?.value || '',
+                        document.getElementById('explain-3')?.value || ''
+                    ],
+                    tradeGoods: document.getElementById('modern-era')?.value || ''
+                },
+                level3: {
+                    consequences: document.getElementById('consequences-positive')?.value || '',
+                    cer: document.getElementById('cer-claim')?.value || '',
+                    recipe: document.getElementById('recipe-ingredients')?.value || ''
+                },
+                level4: {
+                    modernEra: document.getElementById('modern-era')?.value || '',
+                    synectics: document.querySelectorAll('[data-synectics-type]').length > 0 ? 'Completed' : ''
+                }
+            };
+        }
+
+        // ===== MODAL =====
+        function showModal(title, message, type = 'success') {
+            const modal = document.getElementById('responseModal');
+            const content = document.getElementById('modalContent');
+            const titleEl = document.getElementById('modalTitle');
+            const messageEl = document.getElementById('modalMessage');
+
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            content.className = 'modal-content ' + type;
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('responseModal').classList.remove('show');
+        }
+
+        // ===== INITIALIZE ON LOAD =====
+        window.addEventListener('load', function() {
+            initializeApp();
+            initializeConsequenceCategories();
+        });
+
+        // ===== TOUCH SUPPORT =====
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.draggable) {
+                draggedElement = e.target;
+                e.target.setAttribute('dragging', 'true');
+                e.target.classList.add('dragging');
+            }
+        }, false);
+
+        document.addEventListener('touchend', function(e) {
+            if (draggedElement) {
+                draggedElement.removeAttribute('dragging');
+                draggedElement.classList.remove('dragging');
+            }
+            draggedElement = null;
+        }, false);
+
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, false);
+    </script>
+</body>
+</html>

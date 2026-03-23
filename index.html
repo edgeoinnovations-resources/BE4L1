@@ -361,6 +361,43 @@
             75% { transform: translateX(5px); }
         }
 
+        /* ===== VOCAB CLICK-TO-MATCH ===== */
+        .vocab-clickable {
+            padding: 12px;
+            background-color: #ffffff;
+            border: 2px solid #d4c9b3;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.25s ease;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .vocab-clickable:hover {
+            border-color: #c8a951;
+            box-shadow: 0 2px 6px rgba(200, 169, 81, 0.3);
+        }
+
+        .vocab-term.vocab-selected {
+            background-color: #e8f5e9;
+            border-color: #4caf50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+        }
+
+        .vocab-clickable.vocab-matched {
+            background-color: #e8f5e9;
+            border-color: #4caf50;
+            opacity: 0.85;
+            cursor: default;
+        }
+
+        .vocab-def.vocab-wrong {
+            background-color: #ffebee;
+            border-color: #f44336;
+            animation: shake 0.4s;
+        }
+
         .drop-zone {
             min-height: 200px;
             padding: 15px;
@@ -957,10 +994,10 @@
                     Show what you know! These activities test your ability to remember key facts, dates, terms, and places from Big Era IV.
                 </div>
 
-                <!-- Activity 1.1: Vocabulary Matching -->
+                <!-- Activity 1.1: Vocabulary Matching (Click-to-Match) -->
                 <div class="activity" id="activity-1-1">
                     <div class="activity-title">Activity 1.1: Vocabulary Matching <span class="activity-check" id="check-1-1"></span></div>
-                    <p style="margin-bottom: 15px; font-size: 14px;">Drag the terms on the left to match them with their correct definitions on the right. When all pairs are matched correctly, they'll turn green.</p>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Click a <strong>term</strong> on the left to select it (it turns green), then click the matching <strong>definition</strong> on the right. Correct matches stay green. Wrong matches flash red — try again!</p>
                     <div class="drag-container">
                         <div class="drag-column">
                             <div class="drag-column-title">Terms</div>
@@ -971,7 +1008,6 @@
                             <div id="vocab-defs"></div>
                         </div>
                     </div>
-                    <button class="check-button" onclick="checkVocabulary()">Check My Answers</button>
                     <button class="reset-button" onclick="resetVocabulary()">Reset</button>
                     <div class="feedback" id="vocab-feedback"></div>
                 </div>
@@ -1453,63 +1489,103 @@
             updateProgress();
         }
 
-        // ===== VOCABULARY =====
+        // ===== VOCABULARY (Click-to-Match) =====
+        var vocabSelectedTerm = null;  // currently selected term element
+        var vocabMatchedCount = 0;     // how many correct matches so far
+
         function initializeVocabulary() {
             const termsDiv = document.getElementById('vocab-terms');
             const defsDiv = document.getElementById('vocab-defs');
+            vocabSelectedTerm = null;
+            vocabMatchedCount = 0;
 
-            // Shuffle definitions
+            // Shuffle terms and definitions independently
+            let shuffledTerms = [...vocabData].sort(() => Math.random() - 0.5);
             let shuffledDefs = [...vocabData].sort(() => Math.random() - 0.5);
 
-            termsDiv.innerHTML = vocabData.map((item, idx) =>
-                `<div class="draggable-item" draggable="true" data-vocab-id="${idx}" data-type="term" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item.term}</div>`
-            ).join('');
+            termsDiv.innerHTML = shuffledTerms.map((item) => {
+                const idx = vocabData.findIndex(v => v.term === item.term);
+                return `<div class="vocab-clickable vocab-term" data-vocab-id="${idx}" onclick="vocabTermClick(this)">${item.term}</div>`;
+            }).join('');
 
-            defsDiv.innerHTML = shuffledDefs.map((item, idx) =>
-                `<div class="draggable-item" draggable="true" data-vocab-def="${vocabData.findIndex(v => v.term === item.term)}" data-type="def" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item.def}</div>`
-            ).join('');
-
-            setupDragDropZone('vocab-terms', 'term');
-            setupDragDropZone('vocab-defs', 'def');
+            defsDiv.innerHTML = shuffledDefs.map((item) => {
+                const idx = vocabData.findIndex(v => v.term === item.term);
+                return `<div class="vocab-clickable vocab-def" data-vocab-id="${idx}" onclick="vocabDefClick(this)">${item.def}</div>`;
+            }).join('');
         }
 
-        function checkVocabulary() {
-            let correct = 0;
-            let total = vocabData.length;
-            let allMatched = true;
+        function vocabTermClick(el) {
+            // Ignore if this term is already matched
+            if (el.classList.contains('vocab-matched')) return;
 
-            document.querySelectorAll('[data-type="term"]').forEach(term => {
-                const termId = parseInt(term.dataset.vocabId);
-                const defElements = document.querySelectorAll('[data-type="def"]');
-                let found = false;
-
-                defElements.forEach(def => {
-                    const defId = parseInt(def.dataset.vocabDef);
-                    if (termId === defId && term.parentElement.id === 'vocab-terms' && def.parentElement.id === 'vocab-defs') {
-                        term.classList.add('correct');
-                        def.classList.add('correct');
-                        correct++;
-                        found = true;
-                    }
-                });
+            // Clear any previous selection (but not matched items)
+            document.querySelectorAll('.vocab-term').forEach(t => {
+                if (!t.classList.contains('vocab-matched')) {
+                    t.classList.remove('vocab-selected');
+                }
+            });
+            // Clear any red wrong answers from definitions
+            document.querySelectorAll('.vocab-def').forEach(d => {
+                if (!d.classList.contains('vocab-matched')) {
+                    d.classList.remove('vocab-wrong');
+                }
             });
 
-            const feedback = document.getElementById('vocab-feedback');
-            if (correct === total) {
-                feedback.innerHTML = `<span style="color: #2e7d32; font-weight: 700;">✓ Perfect! All 12 matches are correct!</span>`;
-                feedback.classList.add('show', 'success');
-                appState.completedActivities.add('activity-1-1');
-                document.getElementById('check-1-1').textContent = '✓';
+            // Select this term
+            el.classList.add('vocab-selected');
+            vocabSelectedTerm = el;
+        }
+
+        function vocabDefClick(el) {
+            // Ignore if no term is selected, or this def is already matched
+            if (!vocabSelectedTerm || el.classList.contains('vocab-matched')) return;
+
+            const termId = parseInt(vocabSelectedTerm.dataset.vocabId);
+            const defId = parseInt(el.dataset.vocabId);
+
+            if (termId === defId) {
+                // CORRECT MATCH
+                // Clear any red wrong answers
+                document.querySelectorAll('.vocab-def').forEach(d => {
+                    if (!d.classList.contains('vocab-matched')) {
+                        d.classList.remove('vocab-wrong');
+                    }
+                });
+
+                // Lock both as matched (permanent green)
+                vocabSelectedTerm.classList.remove('vocab-selected');
+                vocabSelectedTerm.classList.add('vocab-matched');
+                el.classList.add('vocab-matched');
+
+                // Make them non-clickable
+                vocabSelectedTerm.style.pointerEvents = 'none';
+                el.style.pointerEvents = 'none';
+
+                vocabSelectedTerm = null;
+                vocabMatchedCount++;
+
+                // Check if all matched
+                if (vocabMatchedCount === vocabData.length) {
+                    const feedback = document.getElementById('vocab-feedback');
+                    feedback.innerHTML = '<span style="color: #2e7d32; font-weight: 700;">&#10003; Perfect! All 12 matches are correct!</span>';
+                    feedback.classList.add('show', 'success');
+                    appState.completedActivities.add('activity-1-1');
+                    document.getElementById('check-1-1').textContent = '\u2713';
+                    updateProgress();
+                }
             } else {
-                feedback.innerHTML = `<span style="color: #c62828; font-weight: 700;">Not quite yet. You got ${correct} out of ${total} correct. Keep trying!</span>`;
-                feedback.classList.add('show', 'error');
+                // WRONG MATCH — turn this def red
+                el.classList.add('vocab-wrong');
             }
-            updateProgress();
         }
 
         function resetVocabulary() {
             document.getElementById('vocab-feedback').classList.remove('show');
+            document.getElementById('vocab-feedback').innerHTML = '';
+            appState.completedActivities.delete('activity-1-1');
+            document.getElementById('check-1-1').textContent = '';
             initializeVocabulary();
+            updateProgress();
         }
 
         // ===== TIMELINE =====

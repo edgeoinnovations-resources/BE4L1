@@ -398,6 +398,87 @@
             animation: shake 0.4s;
         }
 
+        /* ===== CITY CARD MATCHING ===== */
+        .city-card {
+            background: #fff;
+            border: 2px solid #d4c9b3;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .city-card-header {
+            background: linear-gradient(135deg, #1a3a5c, #2a5a8c);
+            color: #f5f0e1;
+            padding: 12px 15px;
+            font-family: 'Merriweather', serif;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .city-drop-zone {
+            min-height: 70px;
+            padding: 12px;
+            border-top: 2px dashed #d4c9b3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            background: #faf8f2;
+        }
+
+        .city-drop-zone.drag-hover {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .city-drop-zone .placeholder-text {
+            color: #aaa;
+            font-style: italic;
+            font-size: 13px;
+        }
+
+        .city-card.city-correct {
+            border-color: #4caf50;
+        }
+
+        .city-card.city-correct .city-card-header {
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+        }
+
+        .city-card.city-correct .city-drop-zone {
+            background: #e8f5e9;
+            border-color: #4caf50;
+        }
+
+        .city-desc-draggable {
+            padding: 12px;
+            background-color: #ffffff;
+            border: 2px solid #d4c9b3;
+            border-radius: 4px;
+            cursor: grab;
+            user-select: none;
+            transition: all 0.2s ease;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .city-desc-draggable:hover {
+            border-color: #c8a951;
+            box-shadow: 0 2px 6px rgba(200, 169, 81, 0.3);
+        }
+
+        .city-desc-draggable.dragging {
+            opacity: 0.5;
+        }
+
+        .city-desc-placed {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #4a3728;
+        }
+
         .drop-zone {
             min-height: 200px;
             padding: 15px;
@@ -1092,22 +1173,21 @@
                     <div class="feedback" id="blank-feedback"></div>
                 </div>
 
-                <!-- Activity 1.4: Empire-City Matching -->
+                <!-- Activity 1.4: Empire-City Matching (Drag descriptions to cities) -->
                 <div class="activity" id="activity-1-4">
                     <div class="activity-title">Activity 1.4: Empire-City Matching <span class="activity-check" id="check-1-4"></span></div>
-                    <p style="margin-bottom: 15px; font-size: 14px;">Drag each city to match it with its correct description.</p>
-                    <div class="drag-container">
-                        <div class="drag-column">
-                            <div class="drag-column-title">Cities</div>
-                            <div id="cities-list"></div>
-                        </div>
-                        <div class="drag-column">
-                            <div class="drag-column-title">Descriptions</div>
-                            <div id="cities-descs"></div>
-                        </div>
+                    <p style="margin-bottom: 15px; font-size: 14px;">Drag each <strong>description</strong> from below and drop it under the correct <strong>city</strong>. When all four are placed correctly, both the city and description turn green.</p>
+
+                    <!-- City cards with drop zones -->
+                    <div id="city-cards" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;"></div>
+
+                    <!-- Draggable descriptions pool -->
+                    <div style="margin-top: 10px;">
+                        <div class="drag-column-title" style="margin-bottom: 8px;">Descriptions — drag each one to the correct city above:</div>
+                        <div id="city-desc-pool" style="display: flex; flex-direction: column; gap: 8px;"></div>
                     </div>
-                    <button class="check-button" onclick="checkCities()">Check My Answers</button>
-                    <button class="reset-button" onclick="resetCities()">Reset</button>
+
+                    <button class="reset-button" onclick="resetCities()" style="margin-top: 15px;">Reset</button>
                     <div class="feedback" id="cities-feedback"></div>
                 </div>
             </div>
@@ -1684,55 +1764,181 @@
             updateProgress();
         }
 
-        // ===== CITIES =====
+        // ===== CITIES (Drag descriptions into city cards) =====
+        var cityMatchedCount = 0;
+
         function initializeCities() {
-            const citiesListDiv = document.getElementById('cities-list');
-            const citiesDescsDiv = document.getElementById('cities-descs');
+            cityMatchedCount = 0;
+            var cardsDiv = document.getElementById('city-cards');
+            var poolDiv = document.getElementById('city-desc-pool');
 
-            let shuffledDescs = [...citiesData].sort(() => Math.random() - 0.5);
+            // Build city cards with drop zones
+            cardsDiv.innerHTML = citiesData.map(function(item, idx) {
+                return '<div class="city-card" id="city-card-' + idx + '">' +
+                    '<div class="city-card-header">' + item.city + '</div>' +
+                    '<div class="city-drop-zone" id="city-zone-' + idx + '" data-city-id="' + idx + '"' +
+                    ' ondragover="cityDragOver(event)" ondragleave="cityDragLeave(event)" ondrop="cityDrop(event)">' +
+                    '<span class="placeholder-text">Drop description here</span>' +
+                    '</div></div>';
+            }).join('');
 
-            citiesListDiv.innerHTML = citiesData.map((item, idx) =>
-                `<div class="draggable-item" draggable="true" data-city-id="${idx}" data-type="city" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item.city}</div>`
-            ).join('');
+            // Build shuffled description pool
+            var shuffled = [...citiesData].sort(function() { return Math.random() - 0.5; });
+            poolDiv.innerHTML = shuffled.map(function(item) {
+                var idx = citiesData.findIndex(function(c) { return c.city === item.city; });
+                return '<div class="city-desc-draggable" draggable="true" data-desc-id="' + idx + '"' +
+                    ' ondragstart="cityDescDragStart(event)" ondragend="cityDescDragEnd(event)">' +
+                    item.desc + '</div>';
+            }).join('');
 
-            citiesDescsDiv.innerHTML = shuffledDescs.map((item, idx) =>
-                `<div class="draggable-item" draggable="true" data-city-desc="${citiesData.findIndex(c => c.city === item.city)}" data-type="city-desc" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item.desc}</div>`
-            ).join('');
-
-            setupDragDropZone('cities-list', 'city');
-            setupDragDropZone('cities-descs', 'city-desc');
+            // Add touch support for city descriptions
+            poolDiv.querySelectorAll('.city-desc-draggable').forEach(function(el) {
+                addCityTouchSupport(el);
+            });
         }
 
-        function checkCities() {
-            let correct = 0;
-            document.querySelectorAll('[data-type="city"]').forEach(city => {
-                const cityId = parseInt(city.dataset.cityId);
-                document.querySelectorAll('[data-type="city-desc"]').forEach(desc => {
-                    const descId = parseInt(desc.dataset.cityDesc);
-                    if (cityId === descId && city.parentElement.id === 'cities-list' && desc.parentElement.id === 'cities-descs') {
-                        city.classList.add('correct');
-                        desc.classList.add('correct');
-                        correct++;
-                    }
-                });
-            });
+        function cityDescDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.descId);
+            e.target.classList.add('dragging');
+        }
 
-            const feedback = document.getElementById('cities-feedback');
-            if (correct === 4) {
-                feedback.innerHTML = `<span style="color: #2e7d32; font-weight: 700;">✓ Perfect! All 4 matches are correct!</span>`;
-                feedback.classList.add('show', 'success');
-                appState.completedActivities.add('activity-1-4');
-                document.getElementById('check-1-4').textContent = '✓';
-            } else {
-                feedback.innerHTML = `<span style="color: #c62828; font-weight: 700;">Not quite. You got ${correct} out of 4 correct. Keep trying!</span>`;
-                feedback.classList.add('show', 'error');
+        function cityDescDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function cityDragOver(e) {
+            e.preventDefault();
+            var zone = e.currentTarget;
+            if (!zone.classList.contains('city-locked')) {
+                zone.classList.add('drag-hover');
             }
-            updateProgress();
+        }
+
+        function cityDragLeave(e) {
+            e.currentTarget.classList.remove('drag-hover');
+        }
+
+        function cityDrop(e) {
+            e.preventDefault();
+            var zone = e.currentTarget;
+            zone.classList.remove('drag-hover');
+
+            if (zone.classList.contains('city-locked')) return;
+
+            var descId = parseInt(e.dataTransfer.getData('text/plain'));
+            var cityId = parseInt(zone.dataset.cityId);
+            var draggedEl = document.querySelector('.city-desc-draggable[data-desc-id="' + descId + '"]');
+
+            if (descId === cityId) {
+                // CORRECT — lock it in green
+                zone.innerHTML = '<span class="city-desc-placed">' + citiesData[descId].desc + '</span>';
+                zone.classList.add('city-locked');
+                zone.closest('.city-card').classList.add('city-correct');
+                if (draggedEl) draggedEl.remove();
+                cityMatchedCount++;
+
+                if (cityMatchedCount === citiesData.length) {
+                    var feedback = document.getElementById('cities-feedback');
+                    feedback.innerHTML = '<span style="color: #2e7d32; font-weight: 700;">&#10003; Perfect! All 4 cities matched correctly!</span>';
+                    feedback.classList.add('show', 'success');
+                    appState.completedActivities.add('activity-1-4');
+                    document.getElementById('check-1-4').textContent = '\u2713';
+                    updateProgress();
+                }
+            } else {
+                // WRONG — flash the zone red briefly
+                zone.style.background = '#ffebee';
+                zone.style.borderColor = '#f44336';
+                setTimeout(function() {
+                    zone.style.background = '';
+                    zone.style.borderColor = '';
+                }, 800);
+            }
+        }
+
+        // Touch support for city description dragging
+        function addCityTouchSupport(el) {
+            var touchClone = null;
+            var startX, startY;
+
+            el.addEventListener('touchstart', function(e) {
+                var touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+
+                touchClone = el.cloneNode(true);
+                touchClone.style.position = 'fixed';
+                touchClone.style.zIndex = '9999';
+                touchClone.style.opacity = '0.8';
+                touchClone.style.pointerEvents = 'none';
+                touchClone.style.width = el.offsetWidth + 'px';
+                touchClone.style.left = (startX - el.offsetWidth / 2) + 'px';
+                touchClone.style.top = (startY - 20) + 'px';
+                document.body.appendChild(touchClone);
+                el.classList.add('dragging');
+            }, { passive: true });
+
+            el.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+                if (!touchClone) return;
+                var touch = e.touches[0];
+                touchClone.style.left = (touch.clientX - el.offsetWidth / 2) + 'px';
+                touchClone.style.top = (touch.clientY - 20) + 'px';
+            }, { passive: false });
+
+            el.addEventListener('touchend', function(e) {
+                el.classList.remove('dragging');
+                if (touchClone) {
+                    touchClone.remove();
+                    touchClone = null;
+                }
+                var touch = e.changedTouches[0];
+                var dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+
+                // Find the drop zone
+                var zone = null;
+                if (dropTarget) {
+                    zone = dropTarget.closest('.city-drop-zone');
+                }
+
+                if (zone && !zone.classList.contains('city-locked')) {
+                    var descId = parseInt(el.dataset.descId);
+                    var cityId = parseInt(zone.dataset.cityId);
+
+                    if (descId === cityId) {
+                        zone.innerHTML = '<span class="city-desc-placed">' + citiesData[descId].desc + '</span>';
+                        zone.classList.add('city-locked');
+                        zone.closest('.city-card').classList.add('city-correct');
+                        el.remove();
+                        cityMatchedCount++;
+
+                        if (cityMatchedCount === citiesData.length) {
+                            var feedback = document.getElementById('cities-feedback');
+                            feedback.innerHTML = '<span style="color: #2e7d32; font-weight: 700;">&#10003; Perfect! All 4 cities matched correctly!</span>';
+                            feedback.classList.add('show', 'success');
+                            appState.completedActivities.add('activity-1-4');
+                            document.getElementById('check-1-4').textContent = '\u2713';
+                            updateProgress();
+                        }
+                    } else {
+                        zone.style.background = '#ffebee';
+                        zone.style.borderColor = '#f44336';
+                        setTimeout(function() {
+                            zone.style.background = '';
+                            zone.style.borderColor = '';
+                        }, 800);
+                    }
+                }
+            });
         }
 
         function resetCities() {
             document.getElementById('cities-feedback').classList.remove('show');
+            document.getElementById('cities-feedback').innerHTML = '';
+            appState.completedActivities.delete('activity-1-4');
+            document.getElementById('check-1-4').textContent = '';
             initializeCities();
+            updateProgress();
         }
 
         // ===== CHAIN =====

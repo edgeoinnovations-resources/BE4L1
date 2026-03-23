@@ -398,6 +398,75 @@
             animation: shake 0.4s;
         }
 
+        /* ===== TRADE GOODS CATEGORIZATION ===== */
+        .trade-item-btn {
+            padding: 10px 16px;
+            background: #ffffff;
+            border: 2px solid #d4c9b3;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Open Sans', sans-serif;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .trade-item-btn:hover {
+            border-color: #c8a951;
+            box-shadow: 0 2px 6px rgba(200, 169, 81, 0.3);
+        }
+
+        .trade-item-btn.trade-selected {
+            background: #fff8e1;
+            border-color: #c8a951;
+            box-shadow: 0 0 0 3px rgba(200, 169, 81, 0.3);
+            font-weight: 600;
+        }
+
+        .trade-drop-area {
+            min-height: 120px;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-content: flex-start;
+        }
+
+        .trade-placeholder {
+            color: #aaa;
+            font-style: italic;
+            font-size: 13px;
+            width: 100%;
+            text-align: center;
+            padding-top: 30px;
+        }
+
+        .trade-placed-item {
+            padding: 6px 12px;
+            background: #f0ece0;
+            border: 1px solid #d4c9b3;
+            border-radius: 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .trade-placed-item:hover {
+            background: #ffebee;
+            border-color: #e57373;
+        }
+
+        .trade-placed-item.trade-correct {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            cursor: default;
+        }
+
+        .trade-placed-item.trade-wrong {
+            background: #ffebee;
+            border-color: #f44336;
+        }
+
         /* ===== CHAIN BUILDER (Up/Down Arrows) ===== */
         .chain-item {
             display: flex;
@@ -1346,24 +1415,31 @@
                 <!-- Activity 2.3: Trade Goods Categorization -->
                 <div class="activity" id="activity-2-3">
                     <div class="activity-title">Activity 2.3: Trade Goods Categorization <span class="activity-check" id="check-2-3"></span></div>
-                    <p style="margin-bottom: 15px; font-size: 14px;">Drag each trade good into the correct category based on which direction it primarily traveled along the Silk Roads.</p>
-                    <div id="trade-items"></div>
+                    <p style="margin-bottom: 15px; font-size: 14px;"><strong>Step 1:</strong> Click a trade good below to select it (it turns gold). <strong>Step 2:</strong> Click the category column where it belongs. When you've placed all 12 items, click <strong>Check My Answers</strong>.</p>
+
+                    <!-- Items pool -->
+                    <div id="trade-items-pool" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;"></div>
+
+                    <!-- Category columns -->
                     <div class="category-grid">
-                        <div class="category-column">
-                            <div class="category-title">Traveled East → West</div>
-                            <div id="category-ew" style="min-height: 200px;"></div>
+                        <div class="category-column" style="cursor: pointer;" onclick="tradeCategoryClick('ew')">
+                            <div class="category-title" style="background: linear-gradient(135deg, #8a4513, #a0522d);">East → West</div>
+                            <div id="trade-cat-ew" class="trade-drop-area"><span class="trade-placeholder">Click to place items here</span></div>
                         </div>
-                        <div class="category-column">
-                            <div class="category-title">Traveled West → East</div>
-                            <div id="category-we" style="min-height: 200px;"></div>
+                        <div class="category-column" style="cursor: pointer;" onclick="tradeCategoryClick('we')">
+                            <div class="category-title" style="background: linear-gradient(135deg, #2e4a62, #3a6080);">West → East</div>
+                            <div id="trade-cat-we" class="trade-drop-area"><span class="trade-placeholder">Click to place items here</span></div>
                         </div>
-                        <div class="category-column">
-                            <div class="category-title">Traveled Both Directions</div>
-                            <div id="category-both" style="min-height: 200px;"></div>
+                        <div class="category-column" style="cursor: pointer;" onclick="tradeCategoryClick('both')">
+                            <div class="category-title" style="background: linear-gradient(135deg, #5c4a8a, #7a62a8);">Both Directions</div>
+                            <div id="trade-cat-both" class="trade-drop-area"><span class="trade-placeholder">Click to place items here</span></div>
                         </div>
                     </div>
-                    <button class="check-button" onclick="checkTrade()">Check My Answers</button>
-                    <button class="reset-button" onclick="resetTrade()">Reset</button>
+
+                    <div style="margin-top: 15px;">
+                        <button class="check-button" onclick="checkTrade()">Check My Answers</button>
+                        <button class="reset-button" onclick="resetTrade()">Reset</button>
+                    </div>
                     <div class="feedback" id="trade-feedback"></div>
                 </div>
             </div>
@@ -2164,51 +2240,136 @@
         }
 
         // ===== TRADE GOODS =====
+        // ===== TRADE GOODS (Click to Select, Click Category to Place) =====
+        var tradeSelectedItem = null; // { name, correctCat, element }
+
         function initializeTradeGoods() {
-            const itemsDiv = document.getElementById('trade-items');
-            const allItems = [...tradeData.ew, ...tradeData.we, ...tradeData.both].sort(() => Math.random() - 0.5);
+            tradeSelectedItem = null;
+            var poolDiv = document.getElementById('trade-items-pool');
 
-            itemsDiv.innerHTML = '<div style="margin-bottom: 15px; font-weight: 600; color: #1a3a5c;">Drag items to categories:</div>' +
-                allItems.map((item, idx) => {
-                    let category = '';
-                    if (tradeData.ew.includes(item)) category = 'ew';
-                    else if (tradeData.we.includes(item)) category = 'we';
-                    else category = 'both';
+            // Build all items shuffled
+            var allItems = [];
+            tradeData.ew.forEach(function(item) { allItems.push({ name: item, cat: 'ew' }); });
+            tradeData.we.forEach(function(item) { allItems.push({ name: item, cat: 'we' }); });
+            tradeData.both.forEach(function(item) { allItems.push({ name: item, cat: 'both' }); });
 
-                    return `<div class="category-item" draggable="true" data-trade-item="${item}" data-trade-category="${category}" ondragstart="handleDragStart(event)" ondragend="handleDragEnd(event)">${item}</div>`;
-                }).join('');
+            // Shuffle
+            for (var i = allItems.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = allItems[i]; allItems[i] = allItems[j]; allItems[j] = temp;
+            }
 
-            setupDragDropZone('trade-items', 'trade');
+            poolDiv.innerHTML = allItems.map(function(item) {
+                return '<button class="trade-item-btn" data-trade-name="' + item.name + '" data-trade-cat="' + item.cat + '" onclick="tradeItemClick(this)">' + item.name + '</button>';
+            }).join('');
+
+            // Clear category columns
+            ['trade-cat-ew', 'trade-cat-we', 'trade-cat-both'].forEach(function(id) {
+                document.getElementById(id).innerHTML = '<span class="trade-placeholder">Click to place items here</span>';
+            });
+        }
+
+        function tradeItemClick(el) {
+            // Deselect previous
+            document.querySelectorAll('.trade-item-btn').forEach(function(btn) {
+                btn.classList.remove('trade-selected');
+            });
+            // Select this one
+            el.classList.add('trade-selected');
+            tradeSelectedItem = {
+                name: el.dataset.tradeName,
+                correctCat: el.dataset.tradeCat,
+                element: el
+            };
+        }
+
+        function tradeCategoryClick(catId) {
+            if (!tradeSelectedItem) return;
+
+            var catDiv = document.getElementById('trade-cat-' + catId);
+
+            // Remove placeholder if present
+            var placeholder = catDiv.querySelector('.trade-placeholder');
+            if (placeholder) placeholder.remove();
+
+            // Create placed item chip
+            var chip = document.createElement('span');
+            chip.className = 'trade-placed-item';
+            chip.textContent = tradeSelectedItem.name;
+            chip.dataset.tradeName = tradeSelectedItem.name;
+            chip.dataset.tradeCat = tradeSelectedItem.correctCat;
+            chip.dataset.placedIn = catId;
+            chip.title = 'Click to send back to pool';
+            chip.onclick = function() { tradeRemoveItem(chip); };
+            catDiv.appendChild(chip);
+
+            // Remove from pool
+            tradeSelectedItem.element.remove();
+            tradeSelectedItem = null;
+
+            // Re-add placeholder if category is empty elsewhere
+            ['ew', 'we', 'both'].forEach(function(c) {
+                var div = document.getElementById('trade-cat-' + c);
+                if (div.querySelectorAll('.trade-placed-item').length === 0 && !div.querySelector('.trade-placeholder')) {
+                    div.innerHTML = '<span class="trade-placeholder">Click to place items here</span>';
+                }
+            });
+        }
+
+        function tradeRemoveItem(chip) {
+            // Don't allow removal if already checked and correct
+            if (chip.classList.contains('trade-correct')) return;
+
+            var poolDiv = document.getElementById('trade-items-pool');
+            var btn = document.createElement('button');
+            btn.className = 'trade-item-btn';
+            btn.dataset.tradeName = chip.dataset.tradeName;
+            btn.dataset.tradeCat = chip.dataset.tradeCat;
+            btn.textContent = chip.dataset.tradeName;
+            btn.onclick = function() { tradeItemClick(btn); };
+            poolDiv.appendChild(btn);
+
+            // Remove chip from category
+            var parentDiv = chip.parentElement;
+            chip.remove();
+
+            // Add placeholder back if empty
+            if (parentDiv.querySelectorAll('.trade-placed-item').length === 0) {
+                parentDiv.innerHTML = '<span class="trade-placeholder">Click to place items here</span>';
+            }
         }
 
         function checkTrade() {
-            const categories = ['category-ew', 'category-we', 'category-both'];
-            let correct = 0;
+            var correct = 0;
+            var total = 12;
 
-            categories.forEach(catId => {
-                const items = document.querySelectorAll(`#${catId} [data-trade-item]`);
-                items.forEach(item => {
-                    const itemName = item.dataset.tradeItem;
-                    const expectedCategory = item.dataset.tradeCategory;
-                    const actualCategory = catId.split('-')[1];
+            document.querySelectorAll('.trade-placed-item').forEach(function(chip) {
+                chip.classList.remove('trade-correct', 'trade-wrong');
+                var expectedCat = chip.dataset.tradeCat;
+                var placedIn = chip.dataset.placedIn;
 
-                    if (expectedCategory === actualCategory) {
-                        item.classList.add('placed');
-                        correct++;
-                    } else {
-                        item.classList.remove('placed');
-                    }
-                });
+                if (expectedCat === placedIn) {
+                    chip.classList.add('trade-correct');
+                    correct++;
+                } else {
+                    chip.classList.add('trade-wrong');
+                }
             });
 
-            const feedback = document.getElementById('trade-feedback');
-            if (correct === 12) {
-                feedback.innerHTML = `<span style="color: #2e7d32; font-weight: 700;">✓ Perfect! All 12 items are correctly categorized!</span>`;
+            // Count unplaced items in pool
+            var unplaced = document.querySelectorAll('#trade-items-pool .trade-item-btn').length;
+
+            var feedback = document.getElementById('trade-feedback');
+            if (correct === total && unplaced === 0) {
+                feedback.innerHTML = '<span style="color: #2e7d32; font-weight: 700;">&#10003; Perfect! All 12 items are correctly categorized!</span>';
                 feedback.classList.add('show', 'success');
                 appState.completedActivities.add('activity-2-3');
-                document.getElementById('check-2-3').textContent = '✓';
+                document.getElementById('check-2-3').textContent = '\u2713';
+            } else if (unplaced > 0) {
+                feedback.innerHTML = '<span style="color: #c62828;">You still have ' + unplaced + ' item(s) left to place. Put them all into categories first!</span>';
+                feedback.classList.add('show', 'error');
             } else {
-                feedback.innerHTML = `<span style="color: #c62828;">You got ${correct} out of 12 correct. Keep trying!</span>`;
+                feedback.innerHTML = '<span style="color: #c62828;">You got ' + correct + ' out of ' + total + ' correct. Green = right, red = wrong category. Click red items to send them back and try again!</span>';
                 feedback.classList.add('show', 'error');
             }
             updateProgress();
@@ -2216,7 +2377,11 @@
 
         function resetTrade() {
             document.getElementById('trade-feedback').classList.remove('show');
+            document.getElementById('trade-feedback').innerHTML = '';
+            appState.completedActivities.delete('activity-2-3');
+            document.getElementById('check-2-3').textContent = '';
             initializeTradeGoods();
+            updateProgress();
         }
 
         // ===== CONSEQUENCES =====

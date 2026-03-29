@@ -256,19 +256,6 @@ function buildEmailHTML(studentName, teacherName, section, lessonName, responses
     } else { html += '<p><em>Not completed</em></p>'; }
     html += '</div>';
 
-    html += '<div class="activity">';
-    html += '<h3>3.3 Empire Recipe Builder</h3>';
-    if (l3.empireRecipe) {
-      html += '<div class="response-text"><p class="label">Ingredients:</p>';
-      html += '<p>' + escapeHtml(l3.empireRecipe.ingredients || 'No response') + '</p></div>';
-      html += '<div class="response-text"><p class="label">Quantities:</p>';
-      html += '<p>' + escapeHtml(l3.empireRecipe.quantities || 'No response') + '</p></div>';
-      html += '<div class="response-text"><p class="label">Procedures:</p>';
-      html += '<p>' + escapeHtml(l3.empireRecipe.procedures || 'No response') + '</p></div>';
-      html += '<div class="response-text"><p class="label">Preparation Time:</p>';
-      html += '<p>' + escapeHtml(l3.empireRecipe.prepTime || 'No response') + '</p></div>';
-    } else { html += '<p><em>Not completed</em></p>'; }
-    html += '</div>';
   }
   html += '</div>';
 

@@ -1519,41 +1519,6 @@
                     </div>
                 </div>
 
-                <!-- Activity 3.3: Empire Recipe Builder -->
-                <div class="activity" id="activity-3-3">
-                    <div class="activity-title">Activity 3.3: Empire Recipe Builder <span class="activity-check" id="check-3-3"></span></div>
-                    <p style="margin-bottom: 15px; font-size: 14px;">Using the empires you learned about (Roman, Han, Persian, Kushan, Parthian), design a "recipe" for building a successful, long-lasting empire.</p>
-
-                    <div class="recipe-card">
-                        <div class="recipe-section">
-                            <div class="recipe-section-title">Ingredients</div>
-                            <label class="textarea-label">What elements does a successful empire need? (List at least 5)</label>
-                            <textarea id="recipe-ingredients" placeholder="e.g., A strong army, Access to trade routes, Religious tolerance..." rows="4" onkeyup="updateWordCount(this, 'recipe-ingredients-count')"></textarea>
-                            <div class="word-counter" id="recipe-ingredients-count">0 words</div>
-                        </div>
-
-                        <div class="recipe-section">
-                            <div class="recipe-section-title">Quantities</div>
-                            <label class="textarea-label">How much of each ingredient? (e.g., "A large army" or "Lots of religious tolerance")</label>
-                            <textarea id="recipe-quantities" placeholder="Be specific..." rows="4" onkeyup="updateWordCount(this, 'recipe-quantities-count')"></textarea>
-                            <div class="word-counter" id="recipe-quantities-count">0 words</div>
-                        </div>
-
-                        <div class="recipe-section">
-                            <div class="recipe-section-title">Procedures</div>
-                            <label class="textarea-label">What steps must leaders follow to build and maintain the empire?</label>
-                            <textarea id="recipe-procedures" placeholder="List the steps in order..." rows="4" onkeyup="updateWordCount(this, 'recipe-procedures-count')"></textarea>
-                            <div class="word-counter" id="recipe-procedures-count">0 words</div>
-                        </div>
-
-                        <div class="recipe-section">
-                            <div class="recipe-section-title">Preparation Time</div>
-                            <label class="textarea-label">How long does it take to build a lasting empire? Explain using evidence from at least two empires.</label>
-                            <textarea id="recipe-time" placeholder="Your answer..." rows="4" onkeyup="updateWordCount(this, 'recipe-time-count')"></textarea>
-                            <div class="word-counter" id="recipe-time-count">0 words</div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -1656,8 +1621,7 @@
                 },
                 level3: {
                     activity31: { type: 'consequences', categorization: {}, explanations: {} },
-                    activity32: { type: 'cer', answers: {} },
-                    activity33: { type: 'recipe', answers: {} }
+                    activity32: { type: 'cer', answers: {} }
                 },
                 level4: {
                     activity41: { type: 'essay', answer: '' },
@@ -2443,20 +2407,6 @@
             }
         }
 
-        // ===== RECIPE =====
-        function checkRecipe() {
-            const ingredients = document.getElementById('recipe-ingredients').value.trim();
-            const quantities = document.getElementById('recipe-quantities').value.trim();
-            const procedures = document.getElementById('recipe-procedures').value.trim();
-            const time = document.getElementById('recipe-time').value.trim();
-
-            if (ingredients.length > 0 && quantities.length > 0 && procedures.length > 0 && time.length > 0) {
-                appState.completedActivities.add('activity-3-3');
-                document.getElementById('check-3-3').textContent = '✓';
-                updateProgress();
-            }
-        }
-
         // Set up auto-checking for textareas in Level 3
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('consequences-positive')?.addEventListener('input', markConsequencesComplete);
@@ -2464,10 +2414,6 @@
             document.getElementById('cer-claim')?.addEventListener('input', checkCER);
             document.getElementById('cer-evidence')?.addEventListener('input', checkCER);
             document.getElementById('cer-reasoning')?.addEventListener('input', checkCER);
-            document.getElementById('recipe-ingredients')?.addEventListener('input', checkRecipe);
-            document.getElementById('recipe-quantities')?.addEventListener('input', checkRecipe);
-            document.getElementById('recipe-procedures')?.addEventListener('input', checkRecipe);
-            document.getElementById('recipe-time')?.addEventListener('input', checkRecipe);
             document.getElementById('modern-era')?.addEventListener('input', checkModernEra);
         });
 
@@ -2585,7 +2531,7 @@
         // ===== PROGRESS TRACKING =====
         function updateProgress() {
             const completed = appState.completedActivities.size;
-            const total = 13;
+            const total = 12;
             const percentage = (completed / total) * 100;
 
             document.getElementById('progressFill').style.width = percentage + '%';
@@ -2698,12 +2644,6 @@
                         claim: document.getElementById('cer-claim')?.value || '',
                         evidence: document.getElementById('cer-evidence')?.value || '',
                         reasoning: document.getElementById('cer-reasoning')?.value || ''
-                    },
-                    empireRecipe: {
-                        ingredients: document.getElementById('recipe-ingredients')?.value || '',
-                        quantities: document.getElementById('recipe-quantities')?.value || '',
-                        procedures: document.getElementById('recipe-procedures')?.value || '',
-                        prepTime: document.getElementById('recipe-time')?.value || ''
                     }
                 },
                 level4: {

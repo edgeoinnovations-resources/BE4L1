@@ -2566,16 +2566,16 @@
                 responses: collectAllResponses()
             };
 
-            // Send to Google Apps Script (using no-cors mode since Apps Script handles CORS via redirect)
-            const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNsLeeZqRmc8ZYVt8KSSOTdAjryKOj3QRew57zPFYL8lzoRwqw8-BZEE5eJaFQoOOU/exec';
+            // Send to Google Apps Script
+            const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxu9CQ3OUuRW6xMML5Q8a0A59CwkMaZdmK4wX9-korWBntIWCjLD-4_-HNhrB7yGyBd/exec';
 
             fetch(GOOGLE_APPS_SCRIPT_URL, {
                 method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain' },
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(allResponses)
             })
-            .then(() => {
+            .then(response => response.text())
+            .then(result => {
                 showModal('Success!', `Your work has been sent to ${teacherName}. Great job!`, 'success');
             })
             .catch(error => {

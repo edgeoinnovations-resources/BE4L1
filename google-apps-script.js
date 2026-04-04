@@ -15,7 +15,9 @@
 // Teacher email mapping — students never see these addresses
 var TEACHER_EMAILS = {
   "Ms. Singh": "psingh@asdubai.org",
+  "Mr. Ghassan": "ggammoh@asdubai.org",
   "Mr. Ghammoh": "ggammoh@asdubai.org",
+  "Ms. Dourley": "cdourley@asdubai.org",
   "Mr. Strootman": "pstrootman@asdubai.org"
 };
 
